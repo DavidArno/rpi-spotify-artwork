@@ -1,3 +1,7 @@
+The below MIT licence applies to all files associated with this project, save 
+for those found in i75_display_driver/lib. In the latter case, these are 3rd 
+party libraries with their own individual licences described in each lib file.
+--------------------------------------------------------------------------------
 MIT License
 
 Copyright (c) 2022 David Arno
@@ -19,3 +23,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+--------------------------------------------------------------------------------
