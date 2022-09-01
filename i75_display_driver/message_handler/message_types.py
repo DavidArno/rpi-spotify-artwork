@@ -1,0 +1,5 @@
+DISPLAY_ARTWORK = 'spot-d'
+SAVE_AND_DISPLAY_ARTWORK = 'spot-s'
+PAUSE = 'spot-p'
+RESUME = 'spot-r'
+UPDATE_PROGRESS = 'spot-u'
