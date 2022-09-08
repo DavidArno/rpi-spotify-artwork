@@ -1,5 +1,11 @@
 {
     "cSpell.words": [
-        "spotipy"
-    ]
+        "spotipy",
+        "wibble"
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

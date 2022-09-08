@@ -3,9 +3,10 @@ import sys
 sys.path.append('/message_handler')
 
 # Now import everything else needed
-import micropython
 import select
 import time
+
+import micropython
 import ubinascii
 import hub75
 
