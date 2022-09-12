@@ -3,6 +3,7 @@
 # https://en.wikipedia.org/wiki/Beaufort_scale
 ################################################################################
 import hub75
+import colours
 
 _BEAUFORT_COLOURS = [
     (0xFFFFFF, 0),
@@ -25,9 +26,8 @@ _converted_colours:list|None = None
 def _generate_converted_colours():
     converted_colours = []
     for (colour, knots) in _BEAUFORT_COLOURS:
-        (red, green, blue) = (colour >> 16) & 0xFF, (colour >> 8) & 0xFF, colour & 0xFF
-        converted_colours.append(hub75.color(red, blue, green), knots)
-
+        converted_colours.append(colours.rbg_colour_to_hub75_colour(colour), knots)
+        
 def get_colour_for_speed(knots):
     if _converted_colours is None:
         _converted_colours = _generate_converted_colours()
