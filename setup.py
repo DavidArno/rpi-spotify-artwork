@@ -18,12 +18,21 @@ def get_version(rel_path):
 
 setup(
     name='rpi_spotify_artwork',
-    version = get_version("rpi_spotify_shared/version.py"),
+    version = get_version("src/rpi_spotify_shared/version.py"),
     author='David Arno', 
     author_email='david@davidarno.org',
-    packages=[
+    packages = [
         "rpi_spotify_shared/message_handler", 
-        "rpi_spotify_artwork",
-        "i75_display_driver"],
+#        "rpi_spotify_artwork",
+        "i75_display_driver/brokers",
+        "i75_display_driver/graphics"
+    ],
+    package_dir = {
+        '': 'src'
+    },
+    py_modules = [
+        "i75_display_driver/lib/JPEGdecoder",
+        "i75_display_driver/lib/PNGdecoder"
+    ],
     long_description=open('README.md').read()
 )

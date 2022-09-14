@@ -57,85 +57,85 @@
 # progress (so_far_time / total_time * bar width. When render() is next called, 
 # the progress bar will show the current progress.
 ################################################################################
-import hub75
 import colours
 
 class SpotifyDisplay:
-    def __init__(this, hub75_matrix):
-        this._hub = hub75_matrix
-        this.clear()
+    def __init__(self, hub75_matrix):
+        self._hub = hub75_matrix
+        self.clear()
 
-    def clear(this):
-        this._foreground_layer = []
-        this._background_layer = []
+    def clear(self):
+        self._foreground_layer = []
+        self._background_layer = []
 
         for _ in range(64):
-            this._foreground_layer.append(this._black_row())
-            this._background_layer.append(this._black_row())
+            self._foreground_layer.append(self._black_row())
+            self._background_layer.append(self._black_row())
 
-    def initialise(this):
-        this.clear()
-        this._draw_indented_rectangle(this._background_layer, 6, 54, 52, 5)
+    def initialise(self):
+        self.clear()
+        self._draw_indented_rectangle(self._background_layer, 6, 54, 52, 5)
 
-    def set_pixel_from_jpeg(this, x, y, rgb):
-        if (this.get_pixel_colour(x, y) == colours.BLACK):
-            this.set_pixel_colour(x, y, colours.rbg_colour_to_hub75_colour(rgb))
+    def set_pixel_from_jpeg(self, x, y, rgb):
+        if (self.get_pixel_colour(x, y) == colours.BLACK):
+            self.set_pixel_colour(x, y, colours.rbg_colour_to_hub75_colour(rgb))
 
-    def set_pixel_colour(this, x, y, colour):
-        this._background_layer[x][y] = colour
+    def set_pixel_colour(self, x, y, colour):
+        self._background_layer[x][y] = colour
 
-    def get_pixel_colour(this, x, y):
-        return this._background_layer[x][y]
+    def get_pixel_colour(self, x, y):
+        return self._background_layer[x][y]
 
-    def progress(this, total_time, so_far_time):
+    def progress(self, total_time, so_far_time):
         width = int(so_far_time / total_time * 50)
         if width > 0:
-            this._flood_fill(this._foreground_layer, 7, 55, width, 3, colours.PROGRESS_ILLUMINATED)
+            self._flood_fill(self._foreground_layer, 7, 55, width, 3, colours.PROGRESS_ILLUMINATED)
         elif width < 50:
-            this._flood_fill(this._foreground_layer, 8 + width, 55, 50 - width, 3, colours.BLACK)
+            self._flood_fill(self._foreground_layer, 8 + width, 55, 50 - width, 3, colours.BLACK)
 
-    def pause(this):
-        this._draw_indented_rectangle(this._foreground_layer, 22, 11, 7, 32)
-        this._draw_indented_rectangle(this._foreground_layer, 35, 11, 7, 32)
+    def pause(self):
+        self._draw_indented_rectangle(self._foreground_layer, 22, 11, 7, 32)
+        self._draw_indented_rectangle(self._foreground_layer, 35, 11, 7, 32)
 
-    def resume(this):
-        this._flood_fill(this._foreground_layer, 22, 11, 7, 32, colours.BLACK)
-        this._flood_fill(this._foreground_layer, 35, 11, 7, 32, colours.BLACK)
+    def resume(self):
+        self._flood_fill(self._foreground_layer, 22, 11, 7, 32, colours.BLACK)
+        self._flood_fill(self._foreground_layer, 35, 11, 7, 32, colours.BLACK)
         
-    def render(this):
+    def render(self):
         for x in range(64):
             for y in range(64):
-                if (colour := this._foreground_layer[x][y]) != this._black:
-                    this._hub.set_color(x, y, colour)
+                if (colour := self._foreground_layer[x][y]) != self._black:
+                    self._hub.set_color(x, y, colour)
                 else:
-                     this._hub.set_color(x, y, this._background_layer[x][y])
+                     self._hub.set_color(x, y, self._background_layer[x][y])
+        
 
-    def _black_row(this):
+    def _black_row(self):
         row = []
         for _ in range(64):
-            row.append(this._black)
+            row.append(self._black)
         return row
 
-    def _draw_indented_rectangle(this, layer, x, y, width, height):
-        this._draw_horizontal_line(this, layer, x, y, width-1, colours.DARK_GREY)
-        this._draw_vertical_line(this, layer, x, y+1, height-2, colours.DARK_GREY)
-        this._draw_horizontal_line(this, layer, x+1, y + height - 1, width-1, colours.LIGHT_GREY)
-        this._draw_vertical_line(this, layer, x + width - 1, y+1, height-2, colours.LIGHT_GREY)
-        this._set_pixel_colour(layer, x + width - 1, y, colours.MID_GREY)
-        this._set_pixel_colour(layer, x, y + height - 1, colours.MID_GREY)
-        this._flood_fill(layer, x+1, y+1, width-2, height-2)
+    def _draw_indented_rectangle(self, layer, x, y, width, height):
+        self._draw_horizontal_line(layer, x, y, width-1, colours.DARK_GREY)
+        self._draw_vertical_line(layer, x, y+1, height-2, colours.DARK_GREY)
+        self._draw_horizontal_line(layer, x+1, y + height - 1, width-1, colours.LIGHT_GREY)
+        self._draw_vertical_line(layer, x + width - 1, y+1, height-2, colours.LIGHT_GREY)
+        self._set_pixel_colour(layer, x + width - 1, y, colours.MID_GREY)
+        self._set_pixel_colour(layer, x, y + height - 1, colours.MID_GREY)
+        self._flood_fill(layer, x+1, y+1, width-2, height-2)
 
-    def _draw_horizontal_line(this, layer, x, y, width, colour):
+    def _draw_horizontal_line(self, layer, x, y, width, colour):
         for offset in range(width):
-            this.set_pixel_colour(layer, x + offset, y, colour)
+            self.set_pixel_colour(layer, x + offset, y, colour)
 
-    def _draw_vertical_line(this, layer, x, y, height, colour):
+    def _draw_vertical_line(self, layer, x, y, height, colour):
         for offset in range(height):
-            this.set_pixel_colour(layer, x, y + offset, colour)
+            self.set_pixel_colour(layer, x, y + offset, colour)
 
-    def _flood_fill(this, layer, x, y, width, height, colour):
+    def _flood_fill(self, layer, x, y, width, height, colour):
         for offset in range(width):
-            this._draw_vertical_line(layer, x + offset, y, height, colour)
+            self._draw_vertical_line(layer, x + offset, y, height, colour)
 
-    def _set_pixel_colour(this, layer, x, y, colour):
+    def _set_pixel_colour(self, layer, x, y, colour):
         layer[x][y] = colour
