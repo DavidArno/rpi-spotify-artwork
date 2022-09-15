@@ -31,8 +31,8 @@ setup(
         '': 'src'
     },
     py_modules = [
-        "i75_display_driver/lib/JPEGdecoder",
-        "i75_display_driver/lib/PNGdecoder"
+        "3rd_party/JPEGdecoder",
+        "3rd_party/PNGdecoder"
     ],
     long_description=open('README.md').read()
 )
