@@ -31,8 +31,8 @@ setup(
         '': 'src'
     },
     py_modules = [
-        "3rd_party/JPEGdecoder",
-        "3rd_party/PNGdecoder"
+        "third_party/JPEGdecoder",
+        "third_party/PNGdecoder"
     ],
     long_description=open('README.md').read()
 )
