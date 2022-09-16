@@ -1,5 +1,5 @@
 from enum import Enum
-import hub75
+import hub75 # type: ignore
 
 from hub75_display.display import Display # type: ignore
 

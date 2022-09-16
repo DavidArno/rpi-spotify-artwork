@@ -2,8 +2,6 @@
 # The colours used here are taken from the Beaufort scale colours at
 # https://en.wikipedia.org/wiki/Beaufort_scale
 ################################################################################
-import hub75 # type: ignore
-import colours
 
 _BEAUFORT_COLOURS = [
     (0xFFFFFF, 0),

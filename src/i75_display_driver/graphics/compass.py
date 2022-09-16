@@ -1,5 +1,3 @@
-import hub75
-
 _COMPASS_IMAGE_DATA = [
     [
         0b0001000,
