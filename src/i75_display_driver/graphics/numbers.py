@@ -1,4 +1,8 @@
-_NUMBERS_5x9 = [
+from hub75_display.colours import Hub75Colour
+from hub75_display.sprites import Sprite, create_sprite_from_bitmap_data
+
+
+_NUMBERS_5x9:list[list[int]] = [
     [               # 0
         0b01110,
         0b10001,
@@ -111,13 +115,15 @@ _NUMBERS_5x9 = [
     ]
 ]
 
-def get_coloured_digit_image_data(digit, background_colour, foreground_colour):
-    image_data = []
-    for row in _NUMBERS_5x9[digit]:
-        image_row_colours = []
-        for column_mask in [0b10000, 0b01000, 0b00100, 0b00010, 0b00001]:
-            image_row_colours.append(foreground_colour if row & column_mask else background_colour)
-
-        image_data.append(image_row_colours)
-
-    return image_data
+def get_coloured_digit_image_data(
+    digit:int, 
+    background_colour:Hub75Colour, 
+    foreground_colour:Hub75Colour
+) -> Sprite:
+    return create_sprite_from_bitmap_data(
+        _NUMBERS_5x9[digit], 
+        width=5, 
+        fg_colour=foreground_colour, 
+        bg_colour=background_colour
+    )
+    

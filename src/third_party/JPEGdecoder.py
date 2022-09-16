@@ -32,7 +32,7 @@ from io import BytesIO
 import gc
 
 
-def jpeg(source, quality=8, callback=print, cache=False):
+def jpeg(source, callback, quality=8, cache=False):
     if quality < 1 or quality > 8:
         raise ValueError('Quality must be between 1 and 8')
     huffman_ac_tables = [{}, {}, {}, {}]
@@ -655,7 +655,7 @@ def jpeg(source, quality=8, callback=print, cache=False):
         def getMeta(self):
             return processFile(self.file, True)
 
-        def checkAndRender(self, w=False, h=False, wxh=False, **kwargs):
+        def checkAndRender(self, w=False, h=False, wxh=False, x=0, y=0, placeholder=False, phcolor=0xBBBBBB):
             X, Y, P = self.getMeta()
             if w and X > w:
                 return
@@ -663,7 +663,7 @@ def jpeg(source, quality=8, callback=print, cache=False):
                 return
             if wxh and X * Y > wxh:
                 return
-            self.render(**kwargs)
+            self.render(x, y, placeholder, phcolor)
 
         @micropython.native
         def render(self, x=0, y=0, placeholder=False, phcolor=0xBBBBBB):

@@ -14,25 +14,29 @@ def get_version(rel_path):
             delim = '"' if '"' in line else "'"
             return line.split(delim)[1]
     else:
-        raise RuntimeError("Unable to find version string.")
+        raise RuntimeError('Unable to find version string.')
 
 setup(
-    name='rpi_spotify_artwork',
-    version = get_version("src/rpi_spotify_shared/version.py"),
-    author='David Arno', 
-    author_email='david@davidarno.org',
+    name = 'rpi_spotify_artwork',
+    version = get_version('src/rpi_spotify_shared/version.py'),
+    author = 'David Arno', 
+    author_email = 'david@davidarno.org',
     packages = [
-        "rpi_spotify_shared/message_handler", 
-#        "rpi_spotify_artwork",
-        "i75_display_driver/brokers",
-        "i75_display_driver/graphics"
+        'rpi_spotify_shared/message_handler', 
+#        'rpi_spotify_artwork',
+        'i75_display_driver/brokers',
+        'i75_display_driver/graphics',
+        'hub75_display'
     ],
+    package_data = {
+        'hub75_display': [ 'py.typed' ]
+    }, 
     package_dir = {
         '': 'src'
     },
     py_modules = [
-        "third_party/JPEGdecoder",
-        "third_party/PNGdecoder"
+        'third_party/JPEGdecoder',
+        'third_party/PNGdecoder'
     ],
     long_description=open('README.md').read()
 )
