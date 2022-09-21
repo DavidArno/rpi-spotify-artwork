@@ -1,6 +1,6 @@
-
 from rpi_spotify_shared.message_handler import message_format
-from rpi_spotify_shared.message_handler import message_state_machine 
+from rpi_spotify_shared.message_handler import message_state_machine
+from rpi_spotify_shared.message_handler.message_types import MessageBody, MessageBrokers, MessageHeader 
 
 
 class _EndOfDataToSend(Exception):
@@ -25,11 +25,11 @@ class _ReaderWriterAndBrokers:
     def write(this, message):
         this._replies.append(message)
 
-    def broker1(this, body):
+    def broker1(this, body:MessageBody) -> bool:
         this._broker1_messages.append(body)
         return True
 
-    def broker2(this, body):
+    def broker2(this, body:MessageBody) -> bool:
         this._broker2_messages.append(body)
         return False
 
@@ -45,15 +45,17 @@ class _ReaderWriterAndBrokers:
     def broker2_messages(this):
         return this._broker2_messages
 
-_broker1_header = "B1"
-_broker2_header = "B2"
+_broker1_header = MessageHeader("B1")
+_broker2_header = MessageHeader("B2")
 
-def _set_up_reader_writer_and_brokers(data_to_send):
+def _set_up_reader_writer_and_brokers(data_to_send) -> tuple[_ReaderWriterAndBrokers, MessageBrokers]:
     reader_writer_and_brokers = _ReaderWriterAndBrokers(data_to_send)
-    broker_collection = {
-        _broker1_header: reader_writer_and_brokers.broker1,
-        _broker2_header: reader_writer_and_brokers.broker2
-    }
+    broker_collection:MessageBrokers = MessageBrokers(
+        {
+            _broker1_header: reader_writer_and_brokers.broker1,
+            _broker2_header: reader_writer_and_brokers.broker2
+        }
+    )
 
     return (reader_writer_and_brokers, broker_collection)
 
@@ -64,7 +66,7 @@ def test_sending_valid_message_results_in_it_being_processed_correctly():
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -80,7 +82,7 @@ def test_sending_valid_message_results_in_fail_response_if_appropriate():
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -98,7 +100,7 @@ def test_sending_two_valid_messages_results_in_them_being_processed_correctly():
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -116,7 +118,7 @@ def test_sending_message_without_start_results_in_unexpected_end_and_no_broker_c
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -131,7 +133,7 @@ def test_sending_message_without_header_results_in_missing_header_and_no_broker_
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -146,7 +148,7 @@ def test_sending_unknown_header_results_in_unknown_header_and_no_broker_called()
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -162,7 +164,7 @@ def test_sending_message_without_body_results_in_unexpected_end_and_no_broker_ca
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 
@@ -180,7 +182,7 @@ def test_message_handler_recovers_from_invalid_message_to_correctly_process_more
     )
 
     try:
-        message_state_machine.handle_messages(mock_read_write, mock_read_write, brokers)
+        message_state_machine.handle_messages(mock_read_write.read, mock_read_write.write, brokers)
     except(_EndOfDataToSend):
         pass
 

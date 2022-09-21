@@ -77,11 +77,10 @@ class Display:
     def render_display(self):
         for y in range(self._height):
             for x in range(self._width):
-                colour = (fg := self._top_layer[y][x]) if fg != BLACK else self._middle_layer[y][x]
+                colour = self._check_layers_for_coloured_pixel(x, y)
                 self._hub.set_color(x, y, colour)
 
         self._hub.flip_and_clear(BLACK)
-
 
     def _selected_layer(self, layer:Layer) -> LayerMatrix:
         match layer:
@@ -100,3 +99,11 @@ class Display:
 
     def _set_pixel(self, layer:LayerMatrix, x:int, y:int, colour:Hub75Colour) -> None:
         layer[y][x] = colour
+
+    def _check_layers_for_coloured_pixel(self, x:int, y:int):
+        if (t := self._top_layer[y][x]) and t != BLACK:
+            return t
+        if (m := self._middle_layer[y][x]) and m != BLACK: 
+            return m
+        else:
+            return self._bottom_layer[y][x]

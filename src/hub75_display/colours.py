@@ -1,5 +1,5 @@
 from typing import NamedTuple, NewType
-from third_party.JPEGdecoder import RGBColour
+from third_party.decoder_types import RGBColour
 import hub75 # type: ignore
 
 Hub75Colour = NewType("Hub75Colour", int)

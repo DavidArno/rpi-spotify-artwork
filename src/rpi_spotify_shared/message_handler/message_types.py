@@ -1,5 +1,9 @@
-DISPLAY_ARTWORK = 'spot-d'
-SAVE_AND_DISPLAY_ARTWORK = 'spot-s'
-PAUSE = 'spot-p'
-RESUME = 'spot-r'
-UPDATE_PROGRESS = 'spot-u'
+
+from typing import Callable, NewType
+
+MessageHeader = NewType('MessageHeader', str)
+MessageBody = NewType('MessageBody', str)
+
+MessageHandler = Callable[[MessageBody], bool]
+
+MessageBrokers = NewType('MessageBrokers', dict[MessageHeader, MessageHandler])

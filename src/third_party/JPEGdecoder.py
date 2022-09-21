@@ -31,7 +31,6 @@ from math import *
 from io import BytesIO
 import gc
 
-
 def jpeg(source, callback, quality=8, cache=False):
     if quality < 1 or quality > 8:
         raise ValueError('Quality must be between 1 and 8')

@@ -1,6 +1,7 @@
 from typing import NewType
 from hub75_display.colours import Hub75Colour, BLACK, WHITE, rgb_colour_to_hub75_colour
 from third_party import JPEGdecoder
+from third_party.decoder_types import RGBColour
 
 Sprite = NewType("Sprite", list[ list[ Hub75Colour ]])
 
@@ -25,7 +26,7 @@ def create_sprite_from_bitmap_data(
 def create_sprite_from_jpeg_data(data:bytes) -> Sprite:
     sprite = Sprite([])
 
-    def build_sprite(sprite:Sprite, x:int, y:int, rgbColour:JPEGdecoder.RGBColour):
+    def build_sprite(sprite:Sprite, x:int, y:int, rgbColour:RGBColour):
         while y >= len(sprite):
             sprite.append([])
 

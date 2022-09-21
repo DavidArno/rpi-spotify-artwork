@@ -23,10 +23,13 @@ setup(
     author_email = 'david@davidarno.org',
     packages = [
         'rpi_spotify_shared/message_handler', 
-#        'rpi_spotify_artwork',
-        'i75_display_driver/brokers',
-        'i75_display_driver/graphics',
-        'hub75_display'
+        'hub75_display',
+        'i75_display_driver',
+        'i75_display_driver/shared',
+        'i75_display_driver/spotify_view',
+        'i75_display_driver/test_views',
+        'i75_display_driver/weather_forecast_view',
+        'third_party'
     ],
     package_data = {
         'hub75_display': [ 'py.typed' ]
@@ -34,9 +37,5 @@ setup(
     package_dir = {
         '': 'src'
     },
-    py_modules = [
-        'third_party/JPEGdecoder',
-        'third_party/PNGdecoder'
-    ],
     long_description=open('README.md').read()
 )

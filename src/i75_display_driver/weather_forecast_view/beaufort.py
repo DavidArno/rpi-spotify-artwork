@@ -2,6 +2,9 @@
 # The colours used here are taken from the Beaufort scale colours at
 # https://en.wikipedia.org/wiki/Beaufort_scale
 ################################################################################
+from typing import Generator
+from third_party.decoder_types import RGBColour
+from hub75_display.colours import Hub75Colour, rgb_colour_to_hub75_colour
 
 _BEAUFORT_COLOURS = [
     (0xFFFFFF, 0),
@@ -16,20 +19,18 @@ _BEAUFORT_COLOURS = [
     (0xED8F12, 47),
     (0xED6312, 55),
     (0xED2912, 63),
-    (0xD5102D, 9999)
+    (0xD5102D, -1)
 ]
 
-_converted_colours:list|None = None
+def _generate_converted_colours(beaufort_data:list[tuple[int, int]]) -> Generator[tuple[Hub75Colour, int], None, None]:
+    for (colour, knots) in beaufort_data:
+        yield rgb_colour_to_hub75_colour(RGBColour(colour)), knots
 
-def _generate_converted_colours():
-    converted_colours = []
-    for (colour, knots) in _BEAUFORT_COLOURS:
-        converted_colours.append(colours.rbg_colour_to_hub75_colour(colour), knots)
+_converted_colours = [x for x in _generate_converted_colours(_BEAUFORT_COLOURS)]
         
-def get_colour_for_speed(knots):
-    if _converted_colours is None:
-        _converted_colours = _generate_converted_colours()
-
+def get_colour_for_speed(knots:int) -> Hub75Colour:
     for (colour, threshold) in _converted_colours:
         if knots <= threshold:
             return colour
+
+    return _converted_colours[-1][0]

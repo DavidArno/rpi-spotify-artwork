@@ -1,7 +1,7 @@
 from enum import Enum
 import hub75 # type: ignore
 
-from hub75_display.display import Display # type: ignore
+from hub75_display.display import Display
 
 class PanelType(Enum):
     Generic = 0,
@@ -23,6 +23,7 @@ class LedMatrix:
             stb_invert = stb_invert, 
             panel_type = hub75.PANEL_GENERIC if panel_type == PanelType.Generic else hub75.PANEL_FM6126A
         )
+        self._hub.start()
 
     def create_display(self) -> Display:
         return Display(self._width, self._height, self._hub)

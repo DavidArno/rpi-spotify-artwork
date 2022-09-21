@@ -3,6 +3,9 @@
 # https://www.bbc.co.uk/weather and are the colours used by the BBC for their
 # weather forecasts. They are used here without permission.
 ################################################################################
+from typing import Generator
+from third_party.decoder_types import RGBColour
+from hub75_display.colours import Hub75Colour, rgb_colour_to_hub75_colour
 
 _TEMPERATURE_COLOURS = [
     (0x850100, 40),
@@ -25,21 +28,19 @@ _TEMPERATURE_COLOURS = [
     (0x43A3D9, -10),
     (0x3789C6, -15),
     (0x2374B6, -22),
-    (0x0262A9, -9999)
+    (0x0262A9, -99)
 ]
 
-_converted_colours:list|None = None
 
-def _generate_converted_colours():
-    converted_colours = []
-    for (colour, temp) in _TEMPERATURE_COLOURS:
-        (red, green, blue) = (colour >> 16) & 0xFF, (colour >> 8) & 0xFF, colour & 0xFF
-        converted_colours.append(hub75.color(red, blue, green), temp)
+def _generate_converted_colours(temp_data:list[tuple[int, int]]) -> Generator[tuple[Hub75Colour, int], None, None]:
+    for (colour, temperature) in temp_data:
+        yield rgb_colour_to_hub75_colour(RGBColour(colour)), temperature
 
-def get_colour_for_temperature(temperature):
-    if _converted_colours is None:
-        _converted_colours = _generate_converted_colours()
-
+_converted_colours = [x for x in _generate_converted_colours(_TEMPERATURE_COLOURS)]
+        
+def get_colour_for_temperature(temperature:int) -> Hub75Colour:
     for (colour, threshold) in _converted_colours:
         if temperature >= threshold:
             return colour
+
+    return _converted_colours[-1][0]

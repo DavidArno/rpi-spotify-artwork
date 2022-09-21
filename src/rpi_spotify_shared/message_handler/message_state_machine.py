@@ -31,9 +31,11 @@
 # character each.
 # ############################################################################## 
 from enum import Enum
+from typing import Callable
 from rpi_spotify_shared.message_handler import message_format
+from rpi_spotify_shared.message_handler.message_types import MessageBrokers, MessageHeader, MessageBody
 
-def handle_messages(reader, writer, message_brokers):
+def handle_messages(read:Callable[[], str], write:Callable[[str], None], message_brokers:MessageBrokers):
 
     class _States(Enum):
         WaitingForMessageStart = 0,
@@ -44,16 +46,16 @@ def handle_messages(reader, writer, message_brokers):
         SkippingToEnd = 5,
 
     state = _States.WaitingForMessageStart
-    header = None
-    body = None
+    header:str = ""
+    body:str = ""
 
     while True:
-        char = reader.read()
+        char = read()
 
         if state != _States.ReadingBody and \
            state != _States.SkippingToEnd and \
            char == message_format.MESSAGE_BODY_END:
-            writer.write(message_format.UNEXPECTED_MESSAGE_END)
+            write(message_format.UNEXPECTED_MESSAGE_END)
             state = _States.WaitingForMessageStart
         else:
             match state:
@@ -63,7 +65,7 @@ def handle_messages(reader, writer, message_brokers):
 
                 case _States.HeaderStarted:
                     if char == message_format.MESSAGE_BODY_START:
-                        writer.write(message_format.MISSING_HEADER)
+                        write(message_format.MISSING_HEADER)
                         state = _States.SkippingToEnd
                     else:
                         header = char
@@ -82,11 +84,13 @@ def handle_messages(reader, writer, message_brokers):
                 case _States.ReadingBody:
                     if char == message_format.MESSAGE_BODY_END:
                         if header in message_brokers:
-                            result = message_format.SUCCESS if message_brokers[header](body) else message_format.FAILURE
+                            result = message_format.SUCCESS \
+                                if message_brokers[MessageHeader(header)](MessageBody(body)) \
+                                else message_format.FAILURE
                         else:
                             result = message_format.UNKNOWN_HEADER
 
-                        writer.write(result)
+                        write(result)
                         state = _States.WaitingForMessageStart
                     else:
                         body += char

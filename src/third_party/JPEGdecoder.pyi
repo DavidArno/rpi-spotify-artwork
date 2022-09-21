@@ -1,10 +1,5 @@
-from typing import Any, NewType
-from typing import Callable
-
-FilePath = str
-RGBColour = NewType("RGBColour", int)
-PixelRenderer = Callable[[int, int, RGBColour], None]
-XYP = tuple[int, int, int]
+from typing import Any
+from third_party.decoder_types import FilePath, PixelRenderer, RGBColour, XYP
 
 def jpeg(source:bytes|FilePath, callback:PixelRenderer, quality:int = 8, cache:bool=False) -> JPEGRenderer: ...
 
