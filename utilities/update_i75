@@ -1,8 +1,8 @@
 #!/bin/bash
 if [ "$#" -eq 1 ];then
-    $port=$1
+    port=$1
 elif [ "$#" -eq 0 ];then
-    $port="/dev/ttyACM0"
+    port="/dev/ttyACM0"
 else
     echo "Usage: update_i75 [port]"
 fi
@@ -19,9 +19,9 @@ fi
 
 copy_area='/tmp/i75'
 echo "Removing existing content from i75"
-ampy -p $port rmdir images
-ampy -p $port rmdir lib
-ampy -p $port rm main.py
+ampy -p $port rmdir images 2> /dev/null
+ampy -p $port rmdir lib 2> /dev/null
+ampy -p $port rm main.py 2> /dev/null
 
 echo "Setting up the copy area"
 rm -rf $copy_area
