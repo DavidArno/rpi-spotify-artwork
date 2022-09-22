@@ -6,13 +6,22 @@ from rpi_spotify_shared.message_handler.message_types import MessageBrokers
 from sys import stdin
 
 led_matrix = LedMatrix(64, 64, stb_invert=True)
+led_matrix._hub.set_rgb(2, 2, 0, 255, 0)
+led_matrix._hub.flip()
 
-test_view = DigitTestBroker(led_matrix.create_display())
-broker_set = MessageBrokers(
-    {
-        message_headers.TEST_DIGIT: test_view.handle_digit_test_message
-    }
-)
+try:
+    test_view = DigitTestBroker(led_matrix.create_display())
+    broker_set = MessageBrokers(
+        {
+            message_headers.TEST_DIGIT: test_view.handle_digit_test_message
+        }
+    )
 
-handle_messages(lambda: stdin.read(1), print, broker_set)
+    handle_messages(lambda: stdin.read(1), print, broker_set)
+except:
+    led_matrix._hub.set_rgb(2, 2, 255, 0, 0)
+    led_matrix._hub.set_rgb(2, 3, 255, 0, 0)
+    led_matrix._hub.set_rgb(3, 2, 255, 0, 0)
+    led_matrix._hub.set_rgb(3, 3, 255, 0, 0)
+    led_matrix._hub.flip()
 
