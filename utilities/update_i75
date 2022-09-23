@@ -1,0 +1,47 @@
+#!/bin/bash
+if [ "$#" -eq 1 ];then
+    port=$1
+elif [ "$#" -eq 0 ];then
+    port="/dev/ttyACM0"
+else
+    echo "Usage: update_i75 [port]"
+fi
+
+if ! which ampy >/dev/null; then
+    echo "ampy isn't installed. Please install it and try again." 
+    exit 1
+fi
+
+if { ampy -p $port ls 2>&1 >&3 3>&- | grep '^' >&2; } > /dev/null 2>&1 3>&1; then 
+    echo "Could not talk to the interstate75 board via port $port"
+    exit 2
+fi
+
+copy_area='/tmp/i75'
+echo "Removing existing content from i75"
+ampy -p $port rmdir images 2> /dev/null
+ampy -p $port rmdir lib 2> /dev/null
+ampy -p $port rmdir shims 2> /dev/null
+ampy -p $port rm main.py 2> /dev/null
+
+echo "Setting up the copy area"
+rm -rf $copy_area
+find images -type f | grep -v "/_" | while read line;do 
+    dir_name=$(dirname $line)
+    mkdir -p $copy_area/$dir_name
+    cp $line $copy_area/$line
+done
+find src -type f -name '*.py' | grep -v -E "(/_)|(main\.py)|(compatibility.py)" | while read line;do
+    dest=$(echo $line | sed 's/^src/lib/' -)
+    dir_name=$(dirname $dest)
+    mkdir -p $copy_area/$dir_name
+    cp $line $copy_area/$dest
+done
+cp src/i75_display_driver/main.py $copy_area
+cp src/compatibility.py $copy_area/lib
+
+echo "Copying new files to i75"
+ampy -p $port put $copy_area /
+
+echo "All done. Restarting i75."
+ampy -p $port run -n main.py

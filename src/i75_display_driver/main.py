@@ -1,17 +1,32 @@
-import sys
+import compatibility # type: ignore
 
-# If the platform is rp2, then this is running on the interstate 75, otherwise
-# it's running on a RPI/PC. If the former. add the project's library paths to 
-# the list searched when import is used before importing packages and modules
-if sys.platform == 'rp2':
-    sys.path.append('/brokers') 
-    sys.path.append('/graphics')
+try:
+    from hub75_display.led_matrix import LedMatrix
+    from i75_display_driver.test_views.digit_test_broker import DigitTestBroker
+    from rpi_spotify_shared.message_handler import message_headers
+    from rpi_spotify_shared.message_handler.message_state_machine import handle_messages
+    from rpi_spotify_shared.message_handler.message_types import MessageBrokers
+    from sys import stdin
 
-import hub75 # type: ignore
+    led_matrix = LedMatrix(64, 64, stb_invert=True)
+    led_matrix._hub.set_rgb(2, 2, 0, 255, 0)
+    led_matrix._hub.flip()
 
-WIDTH = 64
-HEIGHT = 64
-matrix = hub75.Hub75(WIDTH, HEIGHT, stb_invert=True)
-matrix.start()
+    try:
+        test_view = DigitTestBroker(led_matrix.create_display())
+        broker_set = MessageBrokers(
+            {
+                message_headers.TEST_DIGIT: test_view.handle_digit_test_message
+            }
+        )
 
+        handle_messages(lambda: stdin.read(1), print, broker_set)
+    except:
+        led_matrix._hub.set_rgb(2, 2, 255, 0, 0)
+        led_matrix._hub.set_rgb(2, 3, 255, 0, 0)
+        led_matrix._hub.set_rgb(3, 2, 255, 0, 0)
+        led_matrix._hub.set_rgb(3, 3, 255, 0, 0)
+        led_matrix._hub.flip()
 
+except Exception as e:
+    print(f"Died with exception:{e}\r\n{e.value}") # type: ignore
