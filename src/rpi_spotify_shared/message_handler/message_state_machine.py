@@ -30,12 +30,22 @@
 # So the message must be @head:body; where head and body must be at least one
 # character each.
 # ############################################################################## 
-from enum import Enum
-from typing import Callable
+import compatibility
+
+if compatibility.running_as_cpython:
+    from enum import Enum
+    from typing import Callable
+    Reader = Callable[[], str]
+    Writer = Callable[[str], None]
+else:
+    Enum = object # type: ignore
+    Reader = callable # type: ignore
+    Writer = callable # type: ignore
+
 from rpi_spotify_shared.message_handler import message_format
 from rpi_spotify_shared.message_handler.message_types import MessageBrokers, MessageHeader, MessageBody
 
-def handle_messages(read:Callable[[], str], write:Callable[[str], None], message_brokers:MessageBrokers):
+def handle_messages(read:Reader, write:Writer, message_brokers:MessageBrokers):
 
     class _States(Enum):
         WaitingForMessageStart = 0,
@@ -46,8 +56,8 @@ def handle_messages(read:Callable[[], str], write:Callable[[str], None], message
         SkippingToEnd = 5,
 
     state = _States.WaitingForMessageStart
-    header:str = ""
-    body:str = ""
+    header = ""
+    body = ""
 
     while True:
         char = read()
@@ -57,44 +67,43 @@ def handle_messages(read:Callable[[], str], write:Callable[[str], None], message
            char == message_format.MESSAGE_BODY_END:
             write(message_format.UNEXPECTED_MESSAGE_END)
             state = _States.WaitingForMessageStart
+
+        elif state == _States.WaitingForMessageStart:
+            if (char == message_format.MESSAGE_START):
+                state = _States.HeaderStarted
+
+        elif state == _States.HeaderStarted:
+            if char == message_format.MESSAGE_BODY_START:
+                write(message_format.MISSING_HEADER)
+                state = _States.SkippingToEnd
+            else:
+                header = char
+                state = _States.ReadingHeader
+
+        elif state == _States.ReadingHeader:
+            if char == message_format.MESSAGE_BODY_START:
+                state = _States.BodyStarted
+            else:
+                header += char
+
+        elif state == _States.BodyStarted:
+            body = char
+            state = _States.ReadingBody
+
+        elif state == _States.ReadingBody:
+            if char == message_format.MESSAGE_BODY_END:
+                if header in message_brokers:
+                    result = message_format.SUCCESS \
+                        if message_brokers[MessageHeader(header)](MessageBody(body)) \
+                        else message_format.FAILURE
+                else:
+                    result = message_format.UNKNOWN_HEADER
+
+                write(result)
+                state = _States.WaitingForMessageStart
+            else:
+                body += char
+
         else:
-            match state:
-                case _States.WaitingForMessageStart:
-                    if (char == message_format.MESSAGE_START):
-                        state = _States.HeaderStarted
-
-                case _States.HeaderStarted:
-                    if char == message_format.MESSAGE_BODY_START:
-                        write(message_format.MISSING_HEADER)
-                        state = _States.SkippingToEnd
-                    else:
-                        header = char
-                        state = _States.ReadingHeader
-
-                case _States.ReadingHeader:
-                    if char == message_format.MESSAGE_BODY_START:
-                        state = _States.BodyStarted
-                    else:
-                        header += char
-
-                case _States.BodyStarted:
-                    body = char
-                    state = _States.ReadingBody
-
-                case _States.ReadingBody:
-                    if char == message_format.MESSAGE_BODY_END:
-                        if header in message_brokers:
-                            result = message_format.SUCCESS \
-                                if message_brokers[MessageHeader(header)](MessageBody(body)) \
-                                else message_format.FAILURE
-                        else:
-                            result = message_format.UNKNOWN_HEADER
-
-                        write(result)
-                        state = _States.WaitingForMessageStart
-                    else:
-                        body += char
-
-                case _States.SkippingToEnd:
-                    if char == message_format.MESSAGE_BODY_END:
-                        state = _States.WaitingForMessageStart
+            if char == message_format.MESSAGE_BODY_END:
+                state = _States.WaitingForMessageStart

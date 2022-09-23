@@ -2,11 +2,20 @@
 # The colours used here are taken from the Beaufort scale colours at
 # https://en.wikipedia.org/wiki/Beaufort_scale
 ################################################################################
-from typing import Generator
+import compatibility
+
+if compatibility.running_as_cpython:
+    from typing import Generator
+    ColoursGenerator = Generator[tuple[Hub75Colour, int], None, None] # type: ignore
+    BeaufortList = list[tuple[int, int]] # type: ignore
+else:
+    ColoursGenerator = object  # type: ignore
+    BeaufortList = 'list[tuple[int, int]]' # type: ignore
+
 from third_party.decoder_types import RGBColour
 from hub75_display.colours import Hub75Colour, rgb_colour_to_hub75_colour
 
-_BEAUFORT_COLOURS = [
+_BEAUFORT_COLOURS:BeaufortList = [ # type: ignore
     (0xFFFFFF, 0),
     (0xAEF1F9, 3),
     (0x96F7DC, 6),
@@ -22,7 +31,7 @@ _BEAUFORT_COLOURS = [
     (0xD5102D, -1)
 ]
 
-def _generate_converted_colours(beaufort_data:list[tuple[int, int]]) -> Generator[tuple[Hub75Colour, int], None, None]:
+def _generate_converted_colours(beaufort_data:BeaufortList) -> ColoursGenerator:
     for (colour, knots) in beaufort_data:
         yield rgb_colour_to_hub75_colour(RGBColour(colour)), knots
 

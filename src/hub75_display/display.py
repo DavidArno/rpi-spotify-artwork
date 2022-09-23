@@ -1,9 +1,15 @@
-from enum import Enum
+import compatibility
+
 import hub75 # type: ignore
 from hub75_display.colours import Hub75Colour, BLACK
 from hub75_display.sprites import Sprite
 
-LayerMatrix = list[ list[ Hub75Colour ]]
+if compatibility.running_as_cpython:
+    LayerMatrix = list[ list[ Hub75Colour ]] # type: ignore
+    from enum import Enum
+else:
+    LayerMatrix = object # type: ignore
+    Enum = object # type: ignore
 
 class Layer(Enum):
     Bottom = 0,
@@ -24,9 +30,9 @@ class Display:
         self.clear_all()
 
     def clear_all(self) -> None:
-        self._top_layer:LayerMatrix = []
-        self._middle_layer:LayerMatrix = []
-        self._bottom_layer:LayerMatrix = []
+        self._top_layer = [] # type: LayerMatrix
+        self._middle_layer = [] # type: LayerMatrix
+        self._bottom_layer = [] # type: LayerMatrix
 
         for _ in range(self._height):
             self._top_layer.append(self._black_row())
@@ -38,13 +44,12 @@ class Display:
         for _ in range(self._height):
             matrix.append(self._black_row())
 
-        match layer:
-            case Layer.Bottom:
-                self._bottom_layer = matrix
-            case Layer.Middle:
-                self._middle_layer = matrix
-            case _:
-                self._top_layer = matrix
+        if layer == Layer.Bottom:
+            self._bottom_layer = matrix
+        elif layer == Layer.Middle:
+            self._middle_layer = matrix
+        else:
+            self._top_layer = matrix
 
     def set_pixel(self, x:int, y:int, colour:Hub75Colour, *, layer:Layer) -> None:
         self._selected_layer(layer)[y][x] = colour
@@ -83,16 +88,15 @@ class Display:
         self._hub.flip_and_clear(BLACK)
 
     def _selected_layer(self, layer:Layer) -> LayerMatrix:
-        match layer:
-            case Layer.Bottom:
-                return self._bottom_layer
-            case Layer.Middle:
-                return self._middle_layer
-            case _:
-                return self._top_layer
+        if layer == Layer.Bottom:
+            return self._bottom_layer
+        elif layer == Layer.Middle:
+            return self._middle_layer
+        else:
+            return self._top_layer
 
-    def _black_row(self) -> list[Hub75Colour]:
-        row:list[Hub75Colour] = []
+    def _black_row(self) -> 'list[Hub75Colour]':
+        row:list[Hub75Colour] = [] # type: ignore
         for _ in range(self._width):
             row.append(BLACK)
         return row
@@ -101,9 +105,9 @@ class Display:
         layer[y][x] = colour
 
     def _check_layers_for_coloured_pixel(self, x:int, y:int):
-        if (t := self._top_layer[y][x]) and t != BLACK:
+        if (t := self._top_layer[y][x]) and t != BLACK:  # type: ignore
             return t
-        if (m := self._middle_layer[y][x]) and m != BLACK: 
+        if (m := self._middle_layer[y][x]) and m != BLACK:  # type: ignore
             return m
         else:
             return self._bottom_layer[y][x]

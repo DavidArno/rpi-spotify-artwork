@@ -3,7 +3,16 @@
 # https://www.bbc.co.uk/weather and are the colours used by the BBC for their
 # weather forecasts. They are used here without permission.
 ################################################################################
-from typing import Generator
+import compatibility
+
+if compatibility.running_as_cpython:
+    from typing import Generator
+    ColoursGenerator = Generator[tuple[Hub75Colour, int], None, None]  # type: ignore
+    ColoursList = list[tuple[int, int]]  # type: ignore
+else:
+    ColoursList = 'list[tuple[int, int]]'  # type: ignore
+    ColoursGenerator = object  # type: ignore
+
 from third_party.decoder_types import RGBColour
 from hub75_display.colours import Hub75Colour, rgb_colour_to_hub75_colour
 
@@ -32,7 +41,7 @@ _TEMPERATURE_COLOURS = [
 ]
 
 
-def _generate_converted_colours(temp_data:list[tuple[int, int]]) -> Generator[tuple[Hub75Colour, int], None, None]:
+def _generate_converted_colours(temp_data:ColoursList) -> ColoursGenerator:
     for (colour, temperature) in temp_data:
         yield rgb_colour_to_hub75_colour(RGBColour(colour)), temperature
 

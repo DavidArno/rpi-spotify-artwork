@@ -1,3 +1,5 @@
+import compatibility
+
 from hub75_display.display import Display
 from hub75 import Hub75 # type: ignore
 from i75_display_driver.test_views.digit_test_broker import DigitTestBroker

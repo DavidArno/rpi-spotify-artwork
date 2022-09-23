@@ -2,7 +2,7 @@ from hub75_display.colours import Hub75Colour
 from hub75_display.sprites import Sprite, create_sprite_from_bitmap_data
 
 
-_NUMBERS_5x9:list[list[int]] = [
+_NUMBERS_5x9:list[list[int]] = [ # type: ignore
     [               # 0
         0b01110,
         0b10001,

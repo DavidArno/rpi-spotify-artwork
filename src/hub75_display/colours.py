@@ -1,13 +1,21 @@
-from typing import NamedTuple, NewType
+import compatibility
+
 from third_party.decoder_types import RGBColour
 import hub75 # type: ignore
 
-Hub75Colour = NewType("Hub75Colour", int)
-RGB = NamedTuple('RGB', [('r', int), ('g', int), ('b', int)])
+if compatibility.running_as_cpython:
+    from typing import NamedTuple, NewType
 
+    Hub75Colour = NewType("Hub75Colour", int)
+    RGB = NamedTuple('RGB', [('r', int), ('g', int), ('b', int)])
+    BLACK:Hub75Colour = hub75.color(0, 0, 0) # type:ignore
+    WHITE:Hub75Colour = hub75.color(255, 255, 255) # type:ignore
+else:
+    Hub75Colour = int # type:ignore
+    RGB = object # type:ignore
+    BLACK = hub75.color(0, 0, 0)
+    WHITE = hub75.color(255, 255, 255)
 
-BLACK:Hub75Colour = hub75.color(0, 0, 0)
-WHITE:Hub75Colour = hub75.color(255, 255, 255)
 
 def rgb_colour_to_rgb(rgb:RGBColour) -> RGB:
     return RGB((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF)

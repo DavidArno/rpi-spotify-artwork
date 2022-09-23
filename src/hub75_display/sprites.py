@@ -1,12 +1,17 @@
-from typing import NewType
+import compatibility
+
 from hub75_display.colours import Hub75Colour, BLACK, WHITE, rgb_colour_to_hub75_colour
 from third_party import JPEGdecoder
 from third_party.decoder_types import RGBColour
 
-Sprite = NewType("Sprite", list[ list[ Hub75Colour ]])
+if compatibility.running_as_cpython:
+    from typing import NewType
+    Sprite = NewType("Sprite", list[ list[ Hub75Colour ]]) # type: ignore
+else:
+    Sprite = 'list[ list[ Hub75Colour ]]' # type: ignore
 
 def create_sprite_from_bitmap_data(
-    bitmap:list[int], 
+    bitmap:'list[int]', 
     *, 
     width:int, 
     bg_colour:Hub75Colour = BLACK,

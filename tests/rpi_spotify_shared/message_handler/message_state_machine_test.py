@@ -50,7 +50,7 @@ _broker2_header = MessageHeader("B2")
 
 def _set_up_reader_writer_and_brokers(data_to_send) -> tuple[_ReaderWriterAndBrokers, MessageBrokers]:
     reader_writer_and_brokers = _ReaderWriterAndBrokers(data_to_send)
-    broker_collection:MessageBrokers = MessageBrokers(
+    broker_collection = MessageBrokers(
         {
             _broker1_header: reader_writer_and_brokers.broker1,
             _broker2_header: reader_writer_and_brokers.broker2

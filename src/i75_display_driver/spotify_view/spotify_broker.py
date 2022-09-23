@@ -7,11 +7,11 @@ from rpi_spotify_shared.message_handler.spotify_artwork_messages import \
 
 from hub75_display.colours import Hub75Colour, rgb_values_to_hub75_colour
 
-_BLACK:Hub75Colour = rgb_values_to_hub75_colour(0, 0, 0)
-_DARK_GREY:Hub75Colour = rgb_values_to_hub75_colour(64, 64, 64)
-_MID_GREY:Hub75Colour = rgb_values_to_hub75_colour(128, 128, 128)
-_LIGHT_GREY:Hub75Colour = rgb_values_to_hub75_colour(192, 192, 192)
-_PROGRESS_ILLUMINATED:Hub75Colour = rgb_values_to_hub75_colour(141, 98, 178)
+_BLACK:Hub75Colour = rgb_values_to_hub75_colour(0, 0, 0) # type: ignore
+_DARK_GREY:Hub75Colour = rgb_values_to_hub75_colour(64, 64, 64) # type: ignore
+_MID_GREY:Hub75Colour = rgb_values_to_hub75_colour(128, 128, 128) # type: ignore
+_LIGHT_GREY:Hub75Colour = rgb_values_to_hub75_colour(192, 192, 192) # type: ignore
+_PROGRESS_ILLUMINATED:Hub75Colour = rgb_values_to_hub75_colour(141, 98, 178) # type: ignore
 
 class SpotifyBroker:
     def __init__(self, display:Display):
