@@ -30,13 +30,20 @@ find images -type f | grep -v "/_" | while read line;do
     mkdir -p $copy_area/$dir_name
     cp $line $copy_area/$line
 done
-find src -type f -name '*.py' | grep -v -E "(/_)|(main\.py)" | while read line;do
+find src -type f -name '*.py' | grep -v -E "(/_)|(main\.py)|(shim_setup.py)" | while read line;do
     dest=$(echo $line | sed 's/^src/lib/' -)
     dir_name=$(dirname $dest)
     mkdir -p $copy_area/$dir_name
     cp $line $copy_area/$dest
 done
+find src/__shims__ -type f -name '*.py' | grep -v "/_" | while read line;do 
+    dest=$(echo $line | sed 's/^src\/__shims__/shims/' -)
+    dir_name=$(dirname $dest)
+    mkdir -p $copy_area/$dir_name
+    cp $line $copy_area/$dest
+done
 cp src/i75_display_driver/main.py $copy_area
+cp src/shim_setup.py $copy_area/lib
 
 echo "Copying new files to i75"
 ampy -p $port put $copy_area /

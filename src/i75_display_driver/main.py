@@ -1,3 +1,5 @@
+import shim_setup # type: ignore
+
 from hub75_display.led_matrix import LedMatrix
 from i75_display_driver.test_views.digit_test_broker import DigitTestBroker
 from rpi_spotify_shared.message_handler import message_headers
