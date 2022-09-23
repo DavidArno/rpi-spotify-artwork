@@ -1,4 +1,10 @@
-from enum import Enum
+import compatibility
+
+if compatibility.running_as_cpython:
+    from enum import Enum
+else:
+    Enum = object
+
 import hub75 # type: ignore
 
 from hub75_display.display import Display
