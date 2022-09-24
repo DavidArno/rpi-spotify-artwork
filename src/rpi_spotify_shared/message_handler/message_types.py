@@ -13,4 +13,4 @@ else:
     MessageHeader = str # type: ignore
     MessageBody = str # type: ignore
     MessageHandler = callable # type: ignore
-    MessageBrokers = object # type: ignore
+    MessageBrokers = lambda x: x # type: ignore
