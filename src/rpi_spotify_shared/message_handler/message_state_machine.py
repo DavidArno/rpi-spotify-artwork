@@ -93,9 +93,13 @@ def handle_messages(read:Reader, write:Writer, message_brokers:MessageBrokers):
         elif state == _States.ReadingBody:
             if char == message_format.MESSAGE_BODY_END:
                 if header in message_brokers:
+                    print(f"Doing {header}({body})")
+                    print(f"header - {message_brokers[MessageHeader(header)]}")
+                    print(f"body - {MessageBody(body)}")
                     result = message_format.SUCCESS \
                         if message_brokers[MessageHeader(header)](MessageBody(body)) \
                         else message_format.FAILURE
+                    print("Done")
                 else:
                     result = message_format.UNKNOWN_HEADER
 

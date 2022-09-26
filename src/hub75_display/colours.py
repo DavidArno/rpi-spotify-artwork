@@ -11,11 +11,11 @@ if compatibility.running_as_cpython:
     BLACK:Hub75Colour = hub75.color(0, 0, 0) # type:ignore
     WHITE:Hub75Colour = hub75.color(255, 255, 255) # type:ignore
 else:
+    from collections import namedtuple
     Hub75Colour = int # type:ignore
-    RGB = object # type:ignore
     BLACK = hub75.color(0, 0, 0)
     WHITE = hub75.color(255, 255, 255)
-
+    RGB = namedtuple("RGB", ("r", "g", "b"))
 
 def rgb_colour_to_rgb(rgb:RGBColour) -> RGB:
     return RGB((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF)

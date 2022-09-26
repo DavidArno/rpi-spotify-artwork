@@ -15,13 +15,21 @@ class DigitTestBroker():
         self._display = display
 
     def handle_digit_test_message(self, digit:MessageBody) -> bool:
-        sprite = get_coloured_digit_image_data(
-            int(digit),
-            rgb_colour_to_hub75_colour(RGBColour(0x400000)), 
-            rgb_colour_to_hub75_colour(RGBColour(0xFFFFFF))
-        )
-        
+        print("hdtm1")
+        a = int(digit)
+        print("hdtm2")
+        b = RGBColour(0x400000)
+        print("hdtm3")
+        c = RGBColour(0xFFFFFF)
+        print("hdtm4")
+        d = rgb_colour_to_hub75_colour(b)
+        print("hdtm5")
+        e = rgb_colour_to_hub75_colour(c)
+        print("hdtm6")
+        sprite = get_coloured_digit_image_data(a, d, e)
+        print("hdtm7")        
         self._display.draw_sprite(2, 2, sprite, layer = Layer.Bottom)
         self._display.render_display()
+        print("hdtm8")
         return True
         

@@ -1,0 +1,1 @@
+print(f"test2.py __name__ is set to: {__name__}")
