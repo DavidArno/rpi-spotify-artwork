@@ -8,7 +8,7 @@ if compatibility.running_as_cpython:
     from typing import NewType
     Sprite = NewType("Sprite", list[ list[ Hub75Colour ]]) # type: ignore
 else:
-    Sprite = 'list[ list[ Hub75Colour ]]' # type: ignore
+    Sprite = lambda x: x # type: ignore
 
 def create_sprite_from_bitmap_data(
     bitmap:'list[int]', 

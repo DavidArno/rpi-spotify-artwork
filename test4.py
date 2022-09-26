@@ -34,3 +34,4 @@ try:
 
 except Exception as e:
     print(f"Died with exception:{e}\r\n{e.value}") # type: ignore
+    raise
