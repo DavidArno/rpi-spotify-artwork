@@ -16,21 +16,16 @@ class DigitTestBroker():
 
     def handle_digit_test_message(self, data:MessageBody) -> bool:
         parts = data.split("-")
-        print("hdtm1")  
         digit = RGBColour(int(parts[0]))
         back_colour = RGBColour(int(parts[1], 16)) if len(parts) >= 2 else RGBColour(0x400000)
         fore_colour = RGBColour(int(parts[2], 16)) if len(parts) >= 3 else RGBColour(0xFFFFFF)
-        print("hdtm2")  
-
         sprite = get_coloured_digit_image_data(
             digit,
             rgb_colour_to_hub75_colour(back_colour),
             rgb_colour_to_hub75_colour(fore_colour)
         )
 
-        print("hdtm7")        
         self._display.draw_sprite(2, 2, sprite, layer = Layer.Bottom)
         self._display.render_display()
-        print("hdtm8")
         return True
         

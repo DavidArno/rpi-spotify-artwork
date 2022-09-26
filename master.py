@@ -21,10 +21,13 @@ while True:
         ser.close()
         quit()
     else:
+        if line[0:2] == 'f:':
+            file = line[2:]
+            
         if line[0] != '?':
-            for c in [x for x in line if x != '\r' and x != '\n']:
-                print(f"Sending: {c}")
-                ser.write(c.encode())
+            data = ''.join([x for x in line if x != '\r' and x != '\n']).encode('ascii')
+            print(f"Sending: {data``}")
+            ser.write(data)
         time.sleep(0.5)
         while ser.in_waiting > 0: 
             response = ser.readline()
