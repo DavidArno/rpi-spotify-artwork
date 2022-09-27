@@ -1,7 +1,10 @@
+import os
 import serial
 import base64
 import time
 import sys
+
+from rpi_spotify_shared.message_handler.spotify_artwork_messages import convert_file_data_to_message_body
 
 print(serial.VERSION)
  
@@ -25,6 +28,12 @@ while True:
             file = line[2:]
             with open(file, 'rb') as filehandle:
                 content = filehandle.read()
+                _, filename_and_ext = os.path.split()
+                filename, _ = filename_and_ext.split('.')
+                message_body = convert_file_data_to_message_body(filename, content)
+                message = f'@spot-s:{message_body};'
+                print(f"Sending: {message}")
+                ser.write(message)
 
         elif line[0] != '?':
             data = ''.join([x for x in line if x != '\r' and x != '\n']).encode('ascii')
