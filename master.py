@@ -23,11 +23,14 @@ while True:
     else:
         if line[0:2] == 'f:':
             file = line[2:]
-            
-        if line[0] != '?':
+            with open(file, 'rb') as filehandle:
+                content = filehandle.read()
+
+        elif line[0] != '?':
             data = ''.join([x for x in line if x != '\r' and x != '\n']).encode('ascii')
             print(f"Sending: {data``}")
             ser.write(data)
+
         time.sleep(0.5)
         while ser.in_waiting > 0: 
             response = ser.readline()

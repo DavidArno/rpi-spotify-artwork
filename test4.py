@@ -1,4 +1,5 @@
-import compatibility # type: ignore
+import compatibility
+from i75_display_driver.spotify_view.spotify_broker import SpotifyBroker # type: ignore
 
 try:
     from hub75_display.led_matrix import LedMatrix
@@ -15,10 +16,12 @@ try:
     try:
         print(1)
         test_view = DigitTestBroker(led_matrix.create_display())
+        spotify_view = SpotifyBroker(led_matrix.create_display())
         print(2)
         broker_set = MessageBrokers(
             {
-                message_headers.TEST_DIGIT: test_view.handle_digit_test_message
+                message_headers.TEST_DIGIT: test_view.handle_digit_test_message,
+                message_headers.SAVE_AND_DISPLAY_ARTWORK: spotify_view.handle_save_and_display_artwork
             }
         )
         print(3)
