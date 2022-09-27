@@ -57,8 +57,8 @@ class SpotifyBroker:
         self._draw_indented_rectangle(Layer.Top, 35, 11, 7, 32)
 
     def _resume(self):
-        self._flood_fill(Layer.Top, 22, 11, 7, 32, _BLACK)
-        self._flood_fill(Layer.Top, 35, 11, 7, 32, _BLACK)
+        self._display._flood_fill(22, 11, 7, 32, _BLACK, Layer.Top)
+        self._display._flood_fill(35, 11, 7, 32, _BLACK, Layer.Top)
 
     def _draw_indented_rectangle(self, layer:Layer, x:int, y:int, width:int, height:int):
         self._display.draw_horizontal_line(x, y, width-1, _DARK_GREY, layer=layer)

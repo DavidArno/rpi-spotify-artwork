@@ -34,7 +34,8 @@ try:
         led_matrix._hub.set_rgb(3, 2, 255, 0, 0)
         led_matrix._hub.set_rgb(3, 3, 255, 0, 0)
         led_matrix._hub.flip()
+        raise
 
 except Exception as e:
     print(f"Died with exception:{e}\r\n{e.value}") # type: ignore
-    raise
+
