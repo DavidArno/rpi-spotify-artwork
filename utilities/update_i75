@@ -39,9 +39,10 @@ find src -type f -name '*.py' | grep -v -E "(/_)|(main\.py)|(compatibility.py)" 
 done
 cp src/i75_display_driver/main.py $copy_area
 cp src/compatibility.py $copy_area/lib
+cp lib/* $copy_area/lib
 
 echo "Copying new files to i75"
 ampy -p $port put $copy_area /
 
 echo "All done. Restarting i75."
-ampy -p $port run -n main.py
+ampy -p $port run -n test4.py
