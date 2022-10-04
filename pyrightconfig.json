@@ -1,9 +1,0 @@
-{ 
-    "pythonVersion": "3.4", 
-    "executionEnvironments": [
-        {
-            "root": "tests",
-            "pythonVersion": "3.10"
-        }
-    ]
-}
