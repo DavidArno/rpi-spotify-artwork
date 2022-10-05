@@ -1,8 +1,7 @@
-from hub75_display.colours import Hub75Colour
-from hub75_display.sprites import Sprite, create_sprite_from_bitmap_data
+from views.sprites import Sprite, create_sprite_from_bitmap_data
+from views.colours import RGBColour
 
-
-_NUMBERS_5x9:list[list[int]] = [ # type: ignore
+_NUMBERS_5x9:list[list[int]] = [
     [               # 0
         0b01110,
         0b10001,
@@ -48,15 +47,15 @@ _NUMBERS_5x9:list[list[int]] = [ # type: ignore
         0b01110
     ],
     [
-        0b10010,
+        0b10000,
+        0b10000,
         0b10010,
         0b10010,
         0b10010,
         0b11111,
-        0b10010,
-        0b10010,
-        0b10010,
-        0b10010
+        0b00010,
+        0b00010,
+        0b00010
     ],
     [
         0b11111,
@@ -115,10 +114,10 @@ _NUMBERS_5x9:list[list[int]] = [ # type: ignore
     ]
 ]
 
-def get_coloured_digit_image_data(
+def get_coloured_digit_sprite(
     digit:int, 
-    background_colour:Hub75Colour, 
-    foreground_colour:Hub75Colour
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
 ) -> Sprite:
     return create_sprite_from_bitmap_data(
         _NUMBERS_5x9[digit], 

@@ -1,38 +1,25 @@
-import compatibility
+from typing import Generator
+from views.colours import BLACK, RGBColour
+from views.sprites import Sprite
+from enum import Enum
 
-import hub75 # type: ignore
-from hub75_display.colours import Hub75Colour, BLACK
-from hub75_display.sprites import Sprite
-
-if compatibility.running_as_cpython:
-    LayerMatrix = list[ list[ Hub75Colour ]] # type: ignore
-    from enum import Enum
-else:
-    LayerMatrix = object # type: ignore
-    Enum = object # type: ignore
+LayerMatrix = list[ list[ RGBColour ]]
 
 class Layer(Enum):
     Bottom = 0,
     Middle = 1,
     Top = 2
 
-class Display:
-    def __init__(
-        self, 
-        width:int, 
-        height:int, 
-        hub:hub75.Hub75
-    ):
+class View:
+    def __init__(self, width:int, height:int):
         self._width = width
         self._height = height
-        self._hub = hub
-
         self.clear_all()
 
     def clear_all(self) -> None:
-        self._top_layer = [] # type: LayerMatrix
-        self._middle_layer = [] # type: LayerMatrix
-        self._bottom_layer = [] # type: LayerMatrix
+        self._top_layer = LayerMatrix()
+        self._middle_layer = LayerMatrix()
+        self._bottom_layer = LayerMatrix()
 
         for _ in range(self._height):
             self._top_layer.append(self._black_row())
@@ -51,23 +38,23 @@ class Display:
         else:
             self._top_layer = matrix
 
-    def set_pixel(self, x:int, y:int, colour:Hub75Colour, *, layer:Layer) -> None:
+    def set_pixel(self, x:int, y:int, colour:RGBColour, *, layer:Layer) -> None:
         self._selected_layer(layer)[y][x] = colour
 
-    def get_pixel(self, x:int, y:int, *, layer:Layer) -> Hub75Colour:
+    def get_pixel(self, x:int, y:int, *, layer:Layer) -> RGBColour:
         return self._selected_layer(layer)[y][x]
 
-    def draw_horizontal_line(self, x:int, y:int, width:int, colour:Hub75Colour, *, layer:Layer) -> None:
+    def draw_horizontal_line(self, x:int, y:int, width:int, colour:RGBColour, *, layer:Layer) -> None:
         selected_layer = self._selected_layer(layer)
         for offset in range(width):
             self._set_pixel(selected_layer, x + offset, y, colour)
 
-    def draw_vertical_line(self, x:int, y:int, height:int, colour:Hub75Colour, *, layer:Layer) -> None:
+    def draw_vertical_line(self, x:int, y:int, height:int, colour:RGBColour, *, layer:Layer) -> None:
         selected_layer = self._selected_layer(layer)
         for offset in range(height):
             self._set_pixel(selected_layer, x, y + offset, colour)
 
-    def flood_fill(self, x:int, y:int, width:int, height:int, colour:Hub75Colour, *, layer:Layer) -> None:
+    def flood_fill(self, x:int, y:int, width:int, height:int, colour:RGBColour, *, layer:Layer) -> None:
         selected_layer = self._selected_layer(layer)
         for offset_y in range(height):
             for offset_x in range(width):
@@ -79,13 +66,13 @@ class Display:
             for j, colour in enumerate(row):
                 self._set_pixel(selected_layer, x + j, y + i, colour)
 
-    def render_display(self):
-        for y in range(self._height):
-            for x in range(self._width):
-                colour = self._check_layers_for_coloured_pixel(x, y)
-                self._hub.set_color(x, y, colour)
+    def render_as_bytes(self) -> bytes:
+        def pixel_colours(self) -> Generator[RGBColour, None, None]:
+            for y in range(self._height):
+                for x in range(self._width):
+                    yield self._check_layers_for_coloured_pixel(x, y)
 
-        self._hub.flip_and_clear(BLACK)
+        return b''.join([p.to_bytes(3, 'little') for p in pixel_colours(self)])
 
     def _selected_layer(self, layer:Layer) -> LayerMatrix:
         if layer == Layer.Bottom:
@@ -95,19 +82,19 @@ class Display:
         else:
             return self._top_layer
 
-    def _black_row(self) -> 'list[Hub75Colour]':
-        row:list[Hub75Colour] = [] # type: ignore
+    def _black_row(self) -> list[RGBColour]:
+        row:list[RGBColour] = []
         for _ in range(self._width):
             row.append(BLACK)
         return row
 
-    def _set_pixel(self, layer:LayerMatrix, x:int, y:int, colour:Hub75Colour) -> None:
+    def _set_pixel(self, layer:LayerMatrix, x:int, y:int, colour:RGBColour) -> None:
         layer[y][x] = colour
 
-    def _check_layers_for_coloured_pixel(self, x:int, y:int):
-        if (t := self._top_layer[y][x]) and t != BLACK:  # type: ignore
+    def _check_layers_for_coloured_pixel(self, x:int, y:int) -> RGBColour:
+        if (t := self._top_layer[y][x]) and t != BLACK:  
             return t
-        if (m := self._middle_layer[y][x]) and m != BLACK:  # type: ignore
+        if (m := self._middle_layer[y][x]) and m != BLACK: 
             return m
         else:
             return self._bottom_layer[y][x]

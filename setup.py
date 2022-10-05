@@ -22,18 +22,11 @@ setup(
     author = 'David Arno', 
     author_email = 'david@davidarno.org',
     packages = [
-        'rpi_spotify_shared/message_handler', 
-        'hub75_display',
-        'i75_display_driver',
-        'i75_display_driver/shared',
-        'i75_display_driver/spotify_view',
-        'i75_display_driver/test_views',
-        'i75_display_driver/weather_forecast_view',
-        'third_party'
-    ],
-    package_data = {
-        'hub75_display': [ 'py.typed' ]
-    }, 
+        'rpi_spotify_shared', 
+        'data_providers',
+        'views',
+        'controllers/spotify'
+    ], 
     package_dir = {
         '': 'src'
     },

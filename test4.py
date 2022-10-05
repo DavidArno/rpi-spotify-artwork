@@ -15,8 +15,9 @@ try:
 
     try:
         print(1)
-        test_view = DigitTestBroker(led_matrix.create_display())
-        spotify_view = SpotifyBroker(led_matrix.create_display())
+        display = led_matrix.create_display()
+        test_view = DigitTestBroker(display)
+        spotify_view = SpotifyBroker(display)
         print(2)
         broker_set = MessageBrokers(
             {
