@@ -25,19 +25,19 @@ while True:
         quit()
     else:
         if line[0:2] == 'f:':
-            file = line[2:]
+            file = line[2:-1]
             with open(file, 'rb') as filehandle:
-                content = filehandle.read()
-                _, filename_and_ext = os.path.split()
+                content = b"wibblewobble" # filehandle.read()
+                _, filename_and_ext = os.path.split(file)
                 filename, _ = filename_and_ext.split('.')
                 message_body = convert_file_data_to_message_body(filename, content)
                 message = f'@spot-s:{message_body};'
                 print(f"Sending: {message}")
-                ser.write(message)
+                ser.write(message.encode('ascii'))
 
         elif line[0] != '?':
             data = ''.join([x for x in line if x != '\r' and x != '\n']).encode('ascii')
-            print(f"Sending: {data``}")
+            print(f"Sending: {data}")
             ser.write(data)
 
         time.sleep(0.5)

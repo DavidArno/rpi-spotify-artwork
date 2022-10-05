@@ -15,10 +15,12 @@ matrix = RGBMatrix(options = options)
 image = Image.new('RGB', (64, 64))
 
 view_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-view_socket.connect((socket_details.HOST, socket_details.PORT))
+view_socket.bind((socket_details.HOST, socket_details.PORT))
+view_socket.listen(1)
+connection, _ = view_socket.accept()
 
 while True:
-    data = view_socket.recv(matrix_details.RAW_IMAGE_BYTES)
+    data = connection.recv(matrix_details.RAW_IMAGE_BYTES)
     if len(data) == 0: break
 
     image.frombytes(data)

@@ -22,5 +22,7 @@ from spotipy.oauth2 import SpotifyOAuth
 scope = "user-read-currently-playing"
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-_ = sp.currently_playing()
+spot = sp.currently_playing()
+
+print(spot)
 
