@@ -1,6 +1,6 @@
-from typing import Generator
-from views.colours import BLACK, RGBColour
-from views.sprites import Sprite
+from typing import Callable, Generator
+from graphics.colours import BLACK, RGBColour
+from graphics.sprites import Sprite
 from enum import Enum
 
 LayerMatrix = list[ list[ RGBColour ]]
@@ -10,7 +10,7 @@ class Layer(Enum):
     Middle = 1,
     Top = 2
 
-class View:
+class Canvas:
     def __init__(self, width:int, height:int):
         self._width = width
         self._height = height
@@ -72,7 +72,22 @@ class View:
                 for x in range(self._width):
                     yield self._check_layers_for_coloured_pixel(x, y)
 
-        return b''.join([p.to_bytes(3, 'little') for p in pixel_colours(self)])
+        return b''.join([p.to_bytes(3, 'big') for p in pixel_colours(self)])
+
+    def copy_transform_paste_layer(
+        self, 
+        *, 
+        from_layer:Layer, 
+        to_layer:Layer, 
+        transform:Callable[[RGBColour], RGBColour]
+    ) -> None:
+        for y in range(self._height):
+            for x in range(self._width):
+                pixel = self.get_pixel(x, y, layer = from_layer)
+                self.set_pixel(x, y, transform(pixel), layer = to_layer)
+    
+    def copy_paste_layer(self, *, from_layer:Layer, to_layer:Layer):
+        self.copy_transform_paste_layer(from_layer = from_layer, to_layer = to_layer, transform = lambda x: x)
 
     def _selected_layer(self, layer:Layer) -> LayerMatrix:
         if layer == Layer.Bottom:

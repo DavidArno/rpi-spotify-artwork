@@ -1,6 +1,6 @@
 from typing import NewType
-from views.colours import RGB
-from views.colours import RGBColour, BLACK, WHITE, rgb_to_rgb_colour
+from graphics.colours import RGB
+from graphics.colours import RGBColour, BLACK, WHITE, rgb_to_rgb_colour
 from PIL.Image import Image
 
 Sprite = NewType("Sprite", list[ list[ RGBColour ]])

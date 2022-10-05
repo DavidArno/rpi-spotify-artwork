@@ -9,15 +9,15 @@ options.cols = matrix_details.DISPLAY_HEIGHT
 options.chain_length = 1
 options.parallel = 1
 options.hardware_mapping = 'adafruit-hat'
-options.gpio_slowdown = 4
+options.gpio_slowdown = 5
 
 matrix = RGBMatrix(options = options)
 image = Image.new('RGB', (64, 64))
 
-view_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-view_socket.bind((socket_details.HOST, socket_details.PORT))
-view_socket.listen(1)
-connection, _ = view_socket.accept()
+canvas_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+canvas_socket.bind((socket_details.HOST, socket_details.PORT))
+canvas_socket.listen(1)
+connection, _ = canvas_socket.accept()
 
 while True:
     data = connection.recv(matrix_details.RAW_IMAGE_BYTES)

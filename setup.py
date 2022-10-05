@@ -24,8 +24,8 @@ setup(
     packages = [
         'rpi_spotify_shared', 
         'data_providers',
-        'views',
-        'controllers/spotify'
+        'graphics',
+        'controllers'
     ], 
     package_dir = {
         '': 'src'

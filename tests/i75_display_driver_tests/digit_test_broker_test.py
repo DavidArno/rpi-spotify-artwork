@@ -2,7 +2,7 @@ import compatibility
 
 from hub75_display.display import Display
 from hub75 import Hub75 # type: ignore
-from i75_display_driver.test_views.digit_test_broker import DigitTestBroker
+from i75_display_driver.test_canvass.digit_test_broker import DigitTestBroker
 
 def test_rendering_four_after_zero_correctly_clears_zero_and_draws_four():
     display = Display(64, 64, Hub75(64, 64, None))

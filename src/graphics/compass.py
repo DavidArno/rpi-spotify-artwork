@@ -2,8 +2,8 @@
 # Set of wind direction arrows.
 # Order is (from 0 - 7): ↑ ↗ → ↘ ↓ ↙ ← ↖
 ################################################################################
-from hub75_display.colours import Hub75Colour
-from hub75_display.sprites import Sprite, create_sprite_from_bitmap_data
+from graphics.colours import RGBColour
+from graphics.sprites import Sprite, create_sprite_from_bitmap_data
 
 _COMPASS_IMAGE_DATA = [
     [
@@ -81,10 +81,10 @@ _COMPASS_IMAGE_DATA = [
     ]
 ]
 
-def get_coloured_compass_image_data(
+def get_coloured_compass_sprite(
     position:int, 
-    background_colour:Hub75Colour, 
-    foreground_colour:Hub75Colour
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
 ) -> Sprite:
     return create_sprite_from_bitmap_data(
         _COMPASS_IMAGE_DATA[position], 
