@@ -5,7 +5,7 @@ from graphics.canvas import Canvas, Layer
 from graphics.sprites import create_sprite_from_image
 from graphics.colours import RGBColour, rgb_values_to_rgb_colour
 from data_providers.spotify_currently_playing import SpotifyCurrentlyPlaying
-from PIL import Image
+from PIL import Image #type: ignore
 from io import BytesIO
 
 _BLACK:RGBColour = rgb_values_to_rgb_colour(0, 0, 0)
@@ -20,7 +20,7 @@ class SpotifyController:
     def __init__(self, canvas:Canvas, spotify:SpotifyCurrentlyPlaying):
         self._canvas = canvas
         self._spotify = spotify
-        self._album_image_url = None
+        self._album_image_url:str|None = None
         self._draw_progress_container()
         self._inactive_refresh_delay_index:int = -1
         self._inactive_refresh_count:int = 0
@@ -50,7 +50,7 @@ class SpotifyController:
 
             else:
                 if album_image_url != self._album_image_url:
-                    response = requests.get(album_image_url)
+                    response = requests.get(str(album_image_url))
                     image = Image.open(BytesIO(response.content)).convert('RGB')
                     sprite = create_sprite_from_image(image)
                     self._canvas.draw_sprite(0, 0, sprite, layer=Layer.Bottom)
@@ -69,7 +69,7 @@ class SpotifyController:
 
         return self._active_on_last_check
 
-    def _update_progress(self, so_far_time:int, total_time:int) -> bool:
+    def _update_progress(self, so_far_time:int, total_time:int) -> None:
         width = int(so_far_time / total_time * 50 + 0.5)
 
         if width > 0:

@@ -1,7 +1,7 @@
 from typing import NewType
 from graphics.colours import RGB
 from graphics.colours import RGBColour, BLACK, WHITE, rgb_to_rgb_colour
-from PIL.Image import Image
+from PIL.Image import Image #type: ignore
 
 Sprite = NewType("Sprite", list[ list[ RGBColour ]])
 
@@ -14,7 +14,7 @@ def create_sprite_from_bitmap_data(
 ) -> Sprite:
     sprite = Sprite([])
     for bitmap_row in bitmap:
-        row = []
+        row:list[RGBColour] = []
         for column in range(width-1, -1, -1):
             mask = 2**column
             row.append(fg_colour if bitmap_row & mask else bg_colour)
@@ -38,7 +38,7 @@ def create_sprite_from_image(image:Image) -> Sprite:
 
     for y in range(image.height):
         for x in range(image.width):
-            r, g, b = image.getpixel((x, y))
-            build_sprite(sprite, x, y, rgb_to_rgb_colour(RGB(r, g, b)))
+            r, g, b = image.getpixel((x, y))  #type: ignore
+            build_sprite(sprite, x, y, rgb_to_rgb_colour(RGB(r, g, b))) #type: ignore
 
     return sprite

@@ -4,7 +4,7 @@ from graphics.colours import RGBColour, rgb_values_to_rgb_colour, BLACK
 from graphics.canvas import Canvas, Layer
 from graphics.sprites import create_sprite_from_image
 from graphics.numbers import get_coloured_digit_sprite
-from PIL import Image
+from PIL import Image #type: ignore
 
 _TIME_COLOUR:RGBColour = rgb_values_to_rgb_colour(0, 106, 255)
 
@@ -21,6 +21,8 @@ class WotNoSpotifyController():
         self._draw_double_digit(37, 3, number = timeval.tm_hour)
         self._draw_double_digit(51, 3, number = timeval.tm_min)
         self._draw_seconds_line(s if (s := timeval.tm_sec) > 0 else 60)
+
+        return True
 
     def _draw_bottom_layer(self):
         image = Image.open('images/wot_no_spotify/bottom_layer.png').convert('RGB')

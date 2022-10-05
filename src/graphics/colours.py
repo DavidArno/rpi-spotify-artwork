@@ -7,10 +7,10 @@ def rgb_colour_to_rgb(rgb:RGBColour) -> RGB:
     return RGB((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF)
 
 def rgb_values_to_rgb_colour(r:int, g:int, b:int) -> RGBColour:
-    return (r << 16) + (g << 8) + b
+    return RGBColour((r << 16) + (g << 8) + b)
 
 def rgb_to_rgb_colour(rgb:RGB) -> RGBColour:
-    return (rgb.r << 16) + (rgb.g << 8) + rgb.b
+    return RGBColour((rgb.r << 16) + (rgb.g << 8) + rgb.b)
 
 BLACK:RGBColour = rgb_values_to_rgb_colour(0, 0, 0)
 WHITE:RGBColour = rgb_values_to_rgb_colour(255, 255, 255)
