@@ -6,8 +6,7 @@ from graphics.compass import get_coloured_compass_sprite
 from graphics.sprites import Sprite, create_sprite_from_image
 from data_providers.metoffice import MetOffice, WeatherData
 from PIL import Image #type: ignore
-
-from graphics.temperatures import get_colour_for_temperature #type: ignore
+from graphics.temperatures import get_colour_for_temperature
 
 class WeatherForecastController():
     def __init__(self, canvas:Canvas, metoffice:MetOffice, check_enabled:Callable[[], bool]):
@@ -36,15 +35,15 @@ class WeatherForecastController():
         self._draw_fixed_layer('top', Layer.Top)
 
     def _draw_fixed_layer(self, image_id:str, layer:Layer) -> None:
-        image = Image.open(f'images/weather/{image_id}.png').convert('RGB')
+        image = Image.open(f'images/weather/{image_id}_layer.png').convert('RGB')
         sprite = create_sprite_from_image(image)
         self._canvas.draw_sprite(0, 0, sprite, layer = layer)
 
     def _draw_forecast(self, forecast:WeatherData) -> None:
         self._canvas.clear_layer(Layer.Middle)
-        self._draw_temperature(17, 2, forecast.day_temp_c)
-        self._draw_temperature(17, 15, forecast.night_temp_c)
-        self._draw_wind(37, 15, forecast.wind_speed_knts, forecast.wind_direction)
+        self._draw_temperature(17, 2, forecast.night_temp_c)
+        self._draw_temperature(17, 14, forecast.day_temp_c)
+        self._draw_wind(36, 14, forecast.wind_speed_knts, forecast.wind_direction)
         self._draw_weather_symbol(0, 31, forecast.day_weather)
         self._draw_weather_symbol(33, 31, forecast.night_weather)
 

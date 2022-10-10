@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 import spotipy #type: ignore
 from spotipy.oauth2 import SpotifyOAuth #type: ignore
 
@@ -7,7 +7,7 @@ class SpotifyCurrentlyPlaying:
     def __init__(self):
         self._spotify =  spotipy.Spotify(auth_manager=SpotifyOAuth(scope="user-read-currently-playing"))
 
-    def get_current_state(self) -> tuple[bool, str|None, int, int, bool]:
+    def get_current_state(self) -> tuple[bool, Optional[str], int, int, bool]:
         result:Any = self._spotify.currently_playing() #type: ignore
         if result == None:
             return False, None, 0, 0, False
