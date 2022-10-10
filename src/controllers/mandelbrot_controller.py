@@ -22,6 +22,8 @@ class MandelbrotController():
 
         self._width /= 1.1
 
+        return True
+
     def _stability_colour(self, stability:float) -> RGBColour:
         r, g, b = (0, 0, 0) if stability == 1 else colorsys.hsv_to_rgb((20 + stability * 360) % 360 / 360, 0.8, 1)
         return rgb_values_to_rgb_colour(int(r * 255), int(g * 255), int(b * 255))
