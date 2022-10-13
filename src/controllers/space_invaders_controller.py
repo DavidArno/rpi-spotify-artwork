@@ -36,7 +36,7 @@ class SpaceInvadersController():
     def actively_displaying(self, _:float) -> bool:
         if not self._check_enabled(): return False
 
-
+        self._update_invaders_and_missile_state()
         return True
 
     def _setup_invaders(self) -> None:
