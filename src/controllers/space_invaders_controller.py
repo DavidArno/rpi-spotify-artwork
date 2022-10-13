@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 from typing import Callable
-from graphics.canvas import Canvas
-from graphics.colours import RGBColour
+
+from graphics.canvas import Canvas, Layer
+from graphics.colours import BLACK, RGBColour
+from graphics.invaders import get_coloured_alien_sprite
+from graphics.sprites import Sprite
 
 _SPACE_INVADER_RED = RGBColour(0xEA1B2C)
 _SPACE_INVADER_ORANGE = RGBColour(0xF37618)
@@ -9,43 +12,58 @@ _SPACE_INVADER_YELLOW = RGBColour(0xFEF100)
 _SPACE_INVADER_GREEN = RGBColour(0x39FE49)
 _SPACE_INVADER_CYAN = RGBColour(0x04BAEA)
 
-_JELLYFISH = 0
-_CRAB = 2
+_JELLYFISH = 2
+_CRAB = 0
 _SQUID = 4
 
-_INVADERS_PER_ROW = 6
+_INVADERS_PER_ROW = 1
 
 @dataclass
 class Invader(): 
-    type: int
+    index: int
     x: int
     y: int
     alive: bool
 
 class SpaceInvadersController():
-    _invaders:list[Invader]
+    _invaders:list[Invader] = []
     _missile_x: int
     _missile_y: int
     _left_to_right: bool
-
+    _alien_sprites:list[Sprite]
+    
     def __init__(self, canvas:Canvas, check_enabled:Callable[[], bool]):
         self._canvas = canvas
         self._check_enabled = check_enabled
-        self._setup_invaders
+        self._setup_invaders()
         
     def actively_displaying(self, _:float) -> bool:
         if not self._check_enabled(): return False
 
         self._update_invaders_and_missile_state()
+        self._render_game_board()
+
         return True
 
     def _setup_invaders(self) -> None:
-        for y in [_JELLYFISH, _CRAB, _CRAB, _SQUID, _SQUID]:
+        aliens = [_JELLYFISH, _CRAB, _CRAB, _SQUID, _SQUID]
+        for y in range(5):
             for x in range (_INVADERS_PER_ROW):
-                self._invaders.append(Invader(y, 12 + 7 * x, 20 + 7 * y, True))
+                self._invaders.append(Invader(aliens[y], 12 + 7 * x, 5 + 7 * y, True))
 
         self._missile_x = -1
         self._left_to_right = True
+
+        colours = [
+            _SPACE_INVADER_YELLOW,
+            _SPACE_INVADER_YELLOW,
+            _SPACE_INVADER_ORANGE,
+            _SPACE_INVADER_ORANGE,
+            _SPACE_INVADER_GREEN,
+            _SPACE_INVADER_GREEN
+        ]
+
+        self._alien_sprites = [get_coloured_alien_sprite(i, BLACK, colours[i]) for i in range(6)]
 
     def _update_invaders_and_missile_state(self) -> None:
         nearest_to_edge = 0 if self._left_to_right else 63
@@ -57,7 +75,7 @@ class SpaceInvadersController():
                 self._explode(invader)
                 
             if invader.alive:
-                invader.type = self._flip_sprite_index(invader.type)
+                invader.index = self._flip_sprite_index(invader.index)
                 invader.x += 1 if self._left_to_right else -1
                 nearest_to_edge = self._nearest_to_edge(nearest_to_edge, invader.x, self._left_to_right)
         
@@ -66,6 +84,12 @@ class SpaceInvadersController():
             for invader in self._invaders:
                 if invader.alive:
                     invader.y += 1
+
+    def _render_game_board(self) -> None:
+        self._canvas.clear_layer(Layer.Bottom)
+        for invader in self._invaders:
+            if invader.alive:
+                self._canvas.draw_sprite(invader.x, invader.y, self._alien_sprites[invader.index], layer = Layer.Bottom)
 
     def _missile_active(self) -> bool: return self._missile_x > -1
 

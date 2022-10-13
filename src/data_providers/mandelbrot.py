@@ -3,9 +3,9 @@
 # https://realpython.com/mandelbrot-set-python and is assumed to be copyright
 # Real Python or the author, Bartosz Zaczyński. 
 ################################################################################
-from typing import NamedTuple, Generator, Union
+from typing import Generator, NamedTuple, Union
 
-_MAX_ITERATIONS = 256
+_MAX_ITERATIONS = 200
 _ESCAPE_RADIUS = 12.0
 
 StabilityPoint = NamedTuple("StabilityPoint", [("x", int), ("y", int), ("stability", float)])
@@ -16,7 +16,6 @@ class MandelbrotStabilityGrid():
         self._grid_height = grid_height
         self._scale = width / 64
         height = self._scale * 64
-        #self._centre = centre
         self._offset = centre + complex(-width, height) / 2
 
     def __iter__(self) -> Generator[StabilityPoint, None, None]:
@@ -33,7 +32,7 @@ class MandelbrotStabilityGrid():
         value = self._escape_count(c, _ESCAPE_RADIUS, _MAX_ITERATIONS) / _MAX_ITERATIONS
         return max(0.0, min(value, 1.0))
 
-    def _escape_count(self, c: complex, escape_radius, max_iterations) -> Union[int, float]:
+    def _escape_count(self, c: complex, escape_radius:float, max_iterations:int) -> Union[int, float]:
         z = complex(0)
         for iteration in range(max_iterations):
             z = z**2 + c

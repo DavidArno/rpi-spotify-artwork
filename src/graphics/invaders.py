@@ -1,5 +1,7 @@
+from graphics.colours import RGBColour
+from graphics.sprites import Sprite, create_sprite_from_bitmap_data
 
-INVADER_IMAGE_DATA = [
+_INVADER_IMAGE_DATA = [
     [
         0b100001,
         0b111111,
@@ -80,3 +82,16 @@ DEFENCE_TOWER = [
     0b1100000011,
     0b1100000011
 ]
+
+
+def get_coloured_alien_sprite(
+    alien_index:int, 
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
+) -> Sprite:
+    return create_sprite_from_bitmap_data(
+        _INVADER_IMAGE_DATA[alien_index], 
+        width=6, 
+        fg_colour=foreground_colour, 
+        bg_colour=background_colour
+    )

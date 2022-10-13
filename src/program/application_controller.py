@@ -1,20 +1,17 @@
+import os
 import socket
 import time
-import os
-
-from graphics.canvas import Canvas
-from rpi_spotify_shared import matrix_details
-from rpi_spotify_shared import socket_details
-
-from data_providers.spotify_currently_playing import SpotifyCurrentlyPlaying
-from data_providers.mandelbrot import MandelbrotSet
-from data_providers.metoffice import MetOffice
 
 from controllers.mandelbrot_controller import MandelbrotController
+from controllers.space_invaders_controller import SpaceInvadersController
 from controllers.spotify_controller import SpotifyController
 from controllers.weather_forecast_controller import WeatherForecastController
 from controllers.wot_no_spotify_controller import WotNoSpotifyController
-from controllers.space_invaders_controller import SpaceInvadersController
+from data_providers.mandelbrot import MandelbrotSet
+from data_providers.metoffice import MetOffice
+from data_providers.spotify_currently_playing import SpotifyCurrentlyPlaying
+from graphics.canvas import Canvas
+from rpi_spotify_shared import matrix_details, socket_details
 
 raw_metoffice_key = os.environ.get('DATAPOINT_API_KEY')
 if raw_metoffice_key is None:
@@ -35,14 +32,14 @@ invader_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEI
 spotify_controller = SpotifyController(spotify_canvas, SpotifyCurrentlyPlaying())
 wot_no_controller = WotNoSpotifyController(wot_no_canvas, lambda:True)
 weather_controller = WeatherForecastController(wot_no_canvas, met_office, lambda: False) 
-mandelbrot_controller = MandelbrotController(wot_no_canvas, MandelbrotSet(64, 64), lambda: False)
-invader_controller = SpaceInvadersController(invader_canvas, lambda:True)
+mandelbrot_controller = MandelbrotController(mandelbrot_canvas, MandelbrotSet(64, 64), lambda: True)
+invader_controller = SpaceInvadersController(invader_canvas, lambda: True)
 
 while True:
     now = time.time()
-    if spotify_controller.actively_displaying(now):
-        data = spotify_canvas.render_as_bytes()
-    elif weather_controller.actively_displaying(now):
+#    if spotify_controller.actively_displaying(now):
+#        data = spotify_canvas.render_as_bytes()
+    if weather_controller.actively_displaying(now):
         data = weather_canvas.render_as_bytes()
     elif mandelbrot_controller.actively_displaying(now):
         data = mandelbrot_canvas.render_as_bytes()
@@ -52,5 +49,4 @@ while True:
         data  = wot_no_canvas.render_as_bytes()
 
     sock.send(data)
-    time.sleep(0.1)
-
+#    time.sleep(0.1)
