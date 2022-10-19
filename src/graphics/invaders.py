@@ -52,7 +52,7 @@ _INVADER_IMAGE_DATA = [
     ]
 ]
 
-SAUCER_IMAGE_DATE = [
+_SAUCER_IMAGE_DATA = [
     0b0011111100,
     0b0111111110,
     0b1010110101,
@@ -64,34 +64,72 @@ INVADER_MISSILE = [
     0b10, 0b01, 0b10, 0b01
 ]
 
-MISSILE_LAUNCHER = [
+_MISSILE_LAUNCHER_IMAGE_DATA = [
     0b00100,
     0b11111,
     0b11111
 ]
 
-DEFENCE_TOWER = [
+_DEFENCE_TOWER_IMAGE_DATA = [
     0b0011111100,
     0b0111111110,
-    0b1111111111,
-    0b1111111111,
     0b1111111111,
     0b1111001111,
     0b1110000111,
     0b1100000011,
-    0b1100000011,
     0b1100000011
 ]
 
+INVADER_WIDTH = 6
+INVADER_HEIGHT = 6
+SAUCER_WIDTH = 10
+SAUCER_HEIGHT = 5
+DEFENCE_TOWER_WIDTH = 10
+DEFENCE_TOWER_HEIGHT = 7
+MISSILE_LAUNCHER_WIDTH = 5
+MISSILE_LAUNCHER_HEIGHT = 3
 
-def get_coloured_alien_sprite(
-    alien_index:int, 
+def get_coloured_invader_sprite(
+    invader_index:int, 
     background_colour:RGBColour, 
     foreground_colour:RGBColour
 ) -> Sprite:
     return create_sprite_from_bitmap_data(
-        _INVADER_IMAGE_DATA[alien_index], 
-        width=6, 
+        _INVADER_IMAGE_DATA[invader_index], 
+        width=INVADER_WIDTH, 
+        fg_colour=foreground_colour, 
+        bg_colour=background_colour
+    )
+
+def get_coloured_saucer_sprite(
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
+) -> Sprite:
+    return create_sprite_from_bitmap_data(
+        _SAUCER_IMAGE_DATA, 
+        width=SAUCER_WIDTH,
+        fg_colour=foreground_colour, 
+        bg_colour=background_colour
+    )
+
+def get_coloured_defence_tower_sprite(
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
+) -> Sprite:
+    return create_sprite_from_bitmap_data(
+        _DEFENCE_TOWER_IMAGE_DATA, 
+        width=DEFENCE_TOWER_WIDTH, 
+        fg_colour=foreground_colour, 
+        bg_colour=background_colour
+    )
+
+def get_coloured_missile_launcher_sprite(
+    background_colour:RGBColour, 
+    foreground_colour:RGBColour
+) -> Sprite:
+    return create_sprite_from_bitmap_data(
+        _MISSILE_LAUNCHER_IMAGE_DATA, 
+        width=MISSILE_LAUNCHER_WIDTH, 
         fg_colour=foreground_colour, 
         bg_colour=background_colour
     )

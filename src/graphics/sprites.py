@@ -1,4 +1,4 @@
-from typing import NewType
+from typing import Callable, NewType, cast
 from graphics.colours import RGB
 from graphics.colours import RGBColour, BLACK, WHITE, rgb_to_rgb_colour
 from PIL.Image import Image #type: ignore
@@ -24,6 +24,12 @@ def create_sprite_from_bitmap_data(
     return sprite
 
 def create_sprite_from_image(image:Image) -> Sprite:
+    return _create_sprite_from_image_with_recolouring(image, lambda c: c)
+
+def create_coloured_sprite_from_mono_image(image:Image, *, foreground_colour:RGBColour) -> Sprite:
+    return _create_sprite_from_image_with_recolouring(image, lambda c: BLACK if c == BLACK else foreground_colour)
+
+def _create_sprite_from_image_with_recolouring(image:Image, recolour:Callable[[RGBColour], RGBColour]) -> Sprite:
     sprite = Sprite([])
 
     def build_sprite(sprite:Sprite, x:int, y:int, colour:RGBColour):
@@ -38,7 +44,8 @@ def create_sprite_from_image(image:Image) -> Sprite:
 
     for y in range(image.height):
         for x in range(image.width):
-            r, g, b = image.getpixel((x, y))  #type: ignore
-            build_sprite(sprite, x, y, rgb_to_rgb_colour(RGB(r, g, b))) #type: ignore
+            r, g, b = cast(tuple[int, int, int], image.getpixel((x, y))) #type: ignore
+            colour = recolour(rgb_to_rgb_colour(RGB(r, g, b))) 
+            build_sprite(sprite, x, y, colour) 
 
     return sprite

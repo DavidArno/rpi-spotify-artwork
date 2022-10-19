@@ -1,12 +1,15 @@
 from typing import Callable
+
+from PIL import Image  # type: ignore
+
+from data_providers.metoffice import MetOffice, WeatherData
 from graphics.beaufort import get_colour_for_speed
-from graphics.colours import TIME_COLOUR, RGBColour, BLACK
 from graphics.canvas import Canvas, Layer
+from graphics.colours import BLACK, TIME_COLOUR, RGBColour
 from graphics.compass import get_coloured_compass_sprite
 from graphics.sprites import Sprite, create_sprite_from_image
-from data_providers.metoffice import MetOffice, WeatherData
-from PIL import Image #type: ignore
 from graphics.temperatures import get_colour_for_temperature
+
 
 class WeatherForecastController():
     def __init__(self, canvas:Canvas, metoffice:MetOffice, check_enabled:Callable[[], bool]):

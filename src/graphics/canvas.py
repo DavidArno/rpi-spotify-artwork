@@ -1,29 +1,34 @@
 import time
-from typing import Callable, Generator
-from graphics.colours import BLACK, RGBColour
-from graphics.sprites import Sprite
 from enum import Enum
+from typing import Any, Callable, Generator
+
+from graphics.colours import BLACK, RGBColour
 from graphics.numbers import get_coloured_digit_sprite
+from graphics.sprites import Sprite
 
 LayerMatrix = list[ list[ RGBColour ]]
 
 class Layer(Enum):
     Bottom = 0,
     Middle = 1,
-    Top = 2
+    Top = 2,
+    Debug = 3
 
 class Canvas:
-    def __init__(self, width:int, height:int):
+    def __init__(self, width:int, height:int, debug_update:Callable[[Any], None]):
         self._width = width
         self._height = height
+        self._debug_update = debug_update
         self.clear_all()
 
     def clear_all(self) -> None:
+        self._debug_layer = LayerMatrix()
         self._top_layer = LayerMatrix()
         self._middle_layer = LayerMatrix()
         self._bottom_layer = LayerMatrix()
 
         for _ in range(self._height):
+            self._debug_layer.append(self._black_row())
             self._top_layer.append(self._black_row())
             self._middle_layer.append(self._black_row())
             self._bottom_layer.append(self._black_row())
@@ -37,8 +42,10 @@ class Canvas:
             self._bottom_layer = matrix
         elif layer == Layer.Middle:
             self._middle_layer = matrix
-        else:
+        elif layer == Layer.Top:
             self._top_layer = matrix
+        else:
+            self._debug_layer = matrix
 
     def set_pixel(self, x:int, y:int, colour:RGBColour, *, layer:Layer) -> None:
         self._selected_layer(layer)[y][x] = colour
@@ -68,12 +75,20 @@ class Canvas:
             for j, colour in enumerate(row):
                 self._set_pixel(selected_layer, x + j, y + i, colour)
 
+    def draw_transparent_sprite(self, x:int, y:int, sprite:Sprite, *, layer:Layer) -> None:
+        selected_layer = self._selected_layer(layer)
+        for i, row in enumerate(sprite):
+            for j, colour in enumerate(row):
+                if colour != BLACK:
+                    self._set_pixel(selected_layer, x + j, y + i, colour)
+
     def render_as_bytes(self) -> bytes:
         def pixel_colours() -> Generator[RGBColour, None, None]:
             for y in range(self._height):
                 for x in range(self._width):
                     yield self._check_layers_for_coloured_pixel(x, y)
 
+        self._debug_update(self)
         return b''.join([p.to_bytes(3, 'big') for p in pixel_colours()])
 
     def copy_transform_paste_layer(
@@ -137,8 +152,10 @@ class Canvas:
             return self._bottom_layer
         elif layer == Layer.Middle:
             return self._middle_layer
-        else:
+        elif layer == Layer.Top:
             return self._top_layer
+        else:
+            return self._debug_layer
 
     def _black_row(self) -> list[RGBColour]:
         row:list[RGBColour] = []
@@ -150,6 +167,8 @@ class Canvas:
         layer[y][x] = colour
 
     def _check_layers_for_coloured_pixel(self, x:int, y:int) -> RGBColour:
+        if (d := self._debug_layer[y][x]) and d != BLACK:  
+            return d
         if (t := self._top_layer[y][x]) and t != BLACK:  
             return t
         if (m := self._middle_layer[y][x]) and m != BLACK: 

@@ -14,4 +14,6 @@ def rgb_to_rgb_colour(rgb:RGB) -> RGBColour:
 
 BLACK:RGBColour = rgb_values_to_rgb_colour(0, 0, 0)
 WHITE:RGBColour = rgb_values_to_rgb_colour(255, 255, 255)
+RED:RGBColour = rgb_values_to_rgb_colour(255, 0, 0)
+GREEN:RGBColour = rgb_values_to_rgb_colour(0, 255, 0)
 TIME_COLOUR:RGBColour = rgb_values_to_rgb_colour(0, 106, 255)
