@@ -9,6 +9,7 @@ from PIL import Image #type: ignore
 from io import BytesIO
 
 _BLACK:RGBColour = rgb_values_to_rgb_colour(0, 0, 0)
+_NEAR_BLACK:RGBColour = rgb_values_to_rgb_colour(1, 1, 1)
 _DARK_GREY:RGBColour = rgb_values_to_rgb_colour(64, 64, 64)
 _MID_GREY:RGBColour = rgb_values_to_rgb_colour(128, 128, 128)
 _LIGHT_GREY:RGBColour = rgb_values_to_rgb_colour(192, 192, 192)
@@ -79,7 +80,7 @@ class SpotifyController:
             self._canvas.flood_fill(7 + width, 55, 50 - width, 3, _MID_GREY, layer = Layer.Top)
         
     def _draw_progress_container(self) -> None:
-        self._draw_indented_rectangle(Layer.Top, 6, 54, 52, 5)
+        self._canvas.flood_fill(6, 54, 52, 5, _NEAR_BLACK, layer = Layer.Top)
 
     def _pause(self):
         def dim_pixel(pixel:RGBColour) -> RGBColour:
