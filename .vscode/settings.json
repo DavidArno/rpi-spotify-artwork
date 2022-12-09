@@ -14,5 +14,11 @@
     "python.testing.pytestEnabled": true,
     "python.analysis.extraPaths": [
         "./src/third_party"
+    ],
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": ["--max-line-length=120"],
+    "python.linting.enabled": true,
+    "python.autoComplete.extraPaths": [
+    
     ]
 }

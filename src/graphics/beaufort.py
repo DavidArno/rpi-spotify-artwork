@@ -6,7 +6,7 @@ from graphics.colours import RGBColour
 
 BeaufortList = list[tuple[RGBColour, int]]
 
-_BEAUFORT_COLOURS:BeaufortList = [
+_BEAUFORT_COLOURS: BeaufortList = [
     (RGBColour(0xFFFFFF), 0),
     (RGBColour(0xAEF1F9), 3),
     (RGBColour(0x96F7DC), 6),
@@ -21,8 +21,9 @@ _BEAUFORT_COLOURS:BeaufortList = [
     (RGBColour(0xED2912), 63),
     (RGBColour(0xD5102D), -1)
 ]
-      
-def get_colour_for_speed(knots:int) -> RGBColour:
+
+
+def get_colour_for_speed(knots: int) -> RGBColour:
     for (colour, threshold) in _BEAUFORT_COLOURS:
         if knots <= threshold:
             return colour

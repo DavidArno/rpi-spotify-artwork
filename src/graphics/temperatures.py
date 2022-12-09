@@ -1,5 +1,5 @@
 ################################################################################
-# The colours used here are taken from the css data from 
+# The colours used here are taken from the css data from
 # https://www.bbc.co.uk/weather and are the colours used by the BBC for their
 # weather forecasts. They are used here without permission.
 ################################################################################
@@ -30,8 +30,9 @@ _TEMPERATURE_COLOURS = [
     (RGBColour(0x2374B6), -22),
     (RGBColour(0x0262A9), -99)
 ]
-        
-def get_colour_for_temperature(temperature:int) -> RGBColour:
+
+
+def get_colour_for_temperature(temperature: int) -> RGBColour:
     for (colour, threshold) in _TEMPERATURE_COLOURS:
         if temperature >= threshold:
             return colour

@@ -25,6 +25,7 @@ met_office =  MetOffice(met_office_key)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((socket_details.HOST, socket_details.PORT))
 
+
 def render_frame_count(canvas_ref:Any) -> None:
     global last_frame_count
     canvas = cast(Canvas, canvas_ref)
@@ -34,6 +35,7 @@ def render_frame_count(canvas_ref:Any) -> None:
     canvas.draw_horizontal_line(2, 62, last_frame_count, GREEN, layer = Layer.Debug)
     canvas.draw_horizontal_line(2 + last_frame_count, 62, 20 - last_frame_count, RED, layer = Layer.Debug)
 
+
 spotify_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT, render_frame_count)
 wot_no_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT, render_frame_count)
 mandelbrot_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT, render_frame_count)
@@ -41,8 +43,8 @@ weather_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEI
 invader_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT, render_frame_count)
 
 spotify_controller = SpotifyController(spotify_canvas, SpotifyCurrentlyPlaying())
-wot_no_controller = WotNoSpotifyController(wot_no_canvas, lambda:True)
-weather_controller = WeatherForecastController(wot_no_canvas, met_office, lambda: False) 
+wot_no_controller = WotNoSpotifyController(wot_no_canvas, lambda: True)
+weather_controller = WeatherForecastController(weather_canvas, met_office, lambda: True)
 mandelbrot_controller = MandelbrotController(mandelbrot_canvas, MandelbrotSet(64, 64), lambda: False)
 invader_controller = SpaceInvadersController(invader_canvas, lambda: True)
 
@@ -52,9 +54,9 @@ seconds_count = time.time()
 
 while True:
     start_time = time.time()
-#    if spotify_controller.actively_displaying(start_time):
-#        data = spotify_canvas.render_as_bytes()
-    if weather_controller.actively_displaying(start_time):
+    if spotify_controller.actively_displaying(start_time):
+        data = spotify_canvas.render_as_bytes()
+    elif weather_controller.actively_displaying(start_time):
         data = weather_canvas.render_as_bytes()
     elif mandelbrot_controller.actively_displaying(start_time):
         data = mandelbrot_canvas.render_as_bytes()
@@ -67,7 +69,7 @@ while True:
     end_time = time.time()
     frame_count += 1
     delay = 0.05 - (end_time - start_time)
-    if delay > 0: 
+    if delay > 0:
         time.sleep(delay)
 
     if end_time - seconds_count > 1:

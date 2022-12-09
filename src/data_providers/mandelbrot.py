@@ -1,17 +1,18 @@
 ################################################################################
-# This code is partially borrowed from 
+# This code is partially borrowed from
 # https://realpython.com/mandelbrot-set-python and is assumed to be copyright
-# Real Python or the author, Bartosz Zaczyński. 
+# Real Python or the author, Bartosz Zaczyński.
 ################################################################################
-from typing import Generator, NamedTuple, Union
+from typing import Generator, NamedTuple
 
 _MAX_ITERATIONS = 200
 _ESCAPE_RADIUS = 12.0
 
 StabilityPoint = NamedTuple("StabilityPoint", [("x", int), ("y", int), ("stability", float)])
 
+
 class MandelbrotStabilityGrid():
-    def __init__(self, grid_width:int, grid_height:int, centre:complex, width:float):
+    def __init__(self, grid_width: int, grid_height: int, centre: complex, width: float):
         self._grid_width = grid_width
         self._grid_height = grid_height
         self._scale = width / 64
@@ -25,14 +26,14 @@ class MandelbrotStabilityGrid():
                 s = self._stability(c)
                 yield StabilityPoint(x, y, s)
 
-    def _xy_to_complex(self, x:int, y:int, scale:float, offset:complex) -> complex:
+    def _xy_to_complex(self, x: int, y: int, scale: float, offset: complex) -> complex:
         return complex(x, -y) * scale + offset
 
     def _stability(self, c: complex) -> float:
         value = self._escape_count(c, _ESCAPE_RADIUS, _MAX_ITERATIONS) / _MAX_ITERATIONS
         return max(0.0, min(value, 1.0))
 
-    def _escape_count(self, c: complex, escape_radius:float, max_iterations:int) -> Union[int, float]:
+    def _escape_count(self, c: complex, escape_radius: float, max_iterations: int) -> float:
         z = complex(0)
         for iteration in range(max_iterations):
             z = z**2 + c
@@ -41,11 +42,12 @@ class MandelbrotStabilityGrid():
 
         return max_iterations
 
+
 class MandelbrotSet():
 
-    def __init__(self, width:int, height:int):
+    def __init__(self, width: int, height: int):
         self._grid_width = width
         self._grid_height = height
 
-    def get_stability_grid(self, centre:complex, width:float) -> MandelbrotStabilityGrid:
+    def get_stability_grid(self, centre: complex, width: float) -> MandelbrotStabilityGrid:
         return MandelbrotStabilityGrid(self._grid_width, self._grid_height, centre, width)

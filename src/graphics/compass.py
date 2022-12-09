@@ -81,15 +81,15 @@ _COMPASS_IMAGE_DATA = [
     ]
 ]
 
+
 def get_coloured_compass_sprite(
-    position:int, 
-    background_colour:RGBColour, 
-    foreground_colour:RGBColour
+    position: int,
+    background_colour: RGBColour,
+    foreground_colour: RGBColour
 ) -> Sprite:
     return create_sprite_from_bitmap_data(
-        _COMPASS_IMAGE_DATA[position], 
-        width=7, 
-        fg_colour=foreground_colour, 
+        _COMPASS_IMAGE_DATA[position],
+        width=7,
+        fg_colour=foreground_colour,
         bg_colour=background_colour
     )
-    

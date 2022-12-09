@@ -1,7 +1,7 @@
 from graphics.sprites import Sprite, create_sprite_from_bitmap_data
 from graphics.colours import RGBColour
 
-_NUMBERS_5x9:list[list[int]] = [
+_NUMBERS_5x9: list[list[int]] = [
     [               # 0
         0b01110,
         0b10001,
@@ -114,15 +114,15 @@ _NUMBERS_5x9:list[list[int]] = [
     ]
 ]
 
+
 def get_coloured_digit_sprite(
-    digit:int, 
-    background_colour:RGBColour, 
-    foreground_colour:RGBColour
+    digit: int,
+    background_colour: RGBColour,
+    foreground_colour: RGBColour
 ) -> Sprite:
     return create_sprite_from_bitmap_data(
-        _NUMBERS_5x9[digit], 
-        width=5, 
-        fg_colour=foreground_colour, 
+        _NUMBERS_5x9[digit],
+        width=5,
+        fg_colour=foreground_colour,
         bg_colour=background_colour
     )
-    
