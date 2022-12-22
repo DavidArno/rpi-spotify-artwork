@@ -15,11 +15,12 @@ options.hardware_mapping = 'adafruit-hat'
 options.gpio_slowdown = 5
 
 matrix: Any = RGBMatrix(options=options)
-image = Image.new('RGB', (64, 64))
-canvas_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+image = Image.new('RGB', (matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT))
 
 
 while True:
+    canvas_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
+    canvas_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     canvas_socket.bind((socket_details.HOST, socket_details.PORT))
     canvas_socket.listen(1)
     connection, _ = canvas_socket.accept()
@@ -33,4 +34,5 @@ while True:
         matrix.SetImage(image)
 
     canvas_socket.close()
+    matrix.Clear()
     print("Lost connection. Starting again")
