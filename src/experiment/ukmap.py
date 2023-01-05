@@ -1,15 +1,9 @@
 
 from typing import Dict, List, Tuple
-import math
 import json
 import urllib.request
 import os
 from pyproj import Transformer
-
-#_MAP_HEIGHT = 727.0
-#_MAP_WIDTH = _MAP_HEIGHT * 2
-#_X_OFFSET = 694
-#_Y_OFFSET = 66
 
 transformer = Transformer.from_crs('EPSG:4326', 'EPSG:27700')
 
@@ -22,13 +16,14 @@ data = json.load(context)
 with open('site_list.json', 'w') as outfile:
     json.dump(data, outfile)
 
+
 def in_range(lat: float, lon: float) -> bool:
-    return 49.9 < lat < 58.7 and -7.4 < lon < 1.8
+    return 49.9 < lat < 58.7 and -7.6 < lon < 1.8
 
 
 def lat_lon_to_x_y(lat: float, lon: float, min_x: float, max_x: float, min_y: float, max_y: float) -> Tuple[int, int]:
     raw_x, raw_y = transformer.transform(lat, lon)
-    x = (raw_x - min_x) / (max_x - min_x) * 38
+    x = (raw_x - min_x) / (max_x - min_x) * 39
     y = (raw_y - min_y) / (max_y - min_y) * -59 + 59
     return int(x), int(y)
 
@@ -72,14 +67,14 @@ for location in data["Locations"]["Location"]:
 
         if not (x, y) in xy_points:
             xy_points[x, y] = 1
-            site_list.append((lat, lon, int(location["id"]), location["name"]))
+            site_list.append((round(lat + 0.01, 1), round(lon + 0.01, 1), int(location["id"]), location["name"]))
 
 sorted_site_list = sorted(site_list, key=lambda x: (x[0], x[1]))
 
 with open('site_list.py', 'w') as outfile:
     outfile.write("site_list = [\n")
     for item in sorted_site_list:
-        outfile.write(f"    {item},\n")
+        outfile.write(f"    ({item[0]:.1F}, {item[1]:.1F}, {item[2]:6d}, \"{item[3]}\"),\n")
     outfile.write("]\n")
 
 from PIL import Image
