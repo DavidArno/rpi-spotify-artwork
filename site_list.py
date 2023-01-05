@@ -1,14 +1,14 @@
 from typing import List, Tuple
 
 site_list: List[Tuple[float, float, int, str]] = [
-    (49.9000, -6.3000,   3803, "Scilly St Marys"),
-    (49.9000, -6.3000, 353324, "St Mary's Airport"),
+    (49.9000, -6.3000,   3803, "Scilly St Marys"), 60x12
+    (49.9000, -6.3000, 353324, "St Mary's Airport"), 60x9
     (50.0000, -5.3000, 354558, "Gunwalloe Church Cove (Beach)"),
     (50.0000, -5.1000, 351034, "Coverack Youth Hostel"),
     (50.1000, -5.7000, 352207, "Land's End Youth Hostel"),
     (50.1000, -5.7000, 352205, "Land's End"),
     (50.1000, -5.2000, 353978, "Trenear"),
-    (50.2000, -5.5000, 310233, "St. Ives"),
+    (50.2000, -5.5000, 310233, "St. Ives"), 59x10
     (50.2000, -5.0000, 352983, "Pendennis Youth Hostel"),
     (50.2000, -4.8000, 350524, "Boswinger Youth Hostel"),
     (50.2000, -3.8000, 324065, "Salcombe"),
