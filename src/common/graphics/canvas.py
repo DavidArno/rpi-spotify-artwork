@@ -1,17 +1,9 @@
 from enum import Enum
 import time
 from typing import Any, Callable, Generator
-from graphics.colours import BLACK, RGBColour
+from common.graphics.colours import BLACK, RGBColour
 from graphics.numbers import get_coloured_digit_sprite
-from graphics.sprites import Sprite
-
-
-def static_vars(**kwargs: Any):
-    def decorate(func: Any) -> None:
-        for k in kwargs:
-            setattr(func, k, kwargs[k])
-        return func
-    return decorate
+from common.graphics.sprites import Sprite
 
 
 LayerMatrix = list[list[RGBColour]]

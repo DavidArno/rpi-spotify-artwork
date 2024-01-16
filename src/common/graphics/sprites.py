@@ -1,21 +1,20 @@
 from typing import Callable, NewType, cast
-from graphics.colours import RGB
-from graphics.colours import RGBColour, BLACK, WHITE, rgb_to_rgb_colour
-from PIL.Image import Image  # type: ignore
+from common import Colour, BLACK, WHITE, rgb_to_colour
+#from PIL.Image import Image  # type: ignore
 
-Sprite = NewType("Sprite", list[list[RGBColour]])
+Sprite = NewType("Sprite", list[list[Colour]])
 
 
-def create_sprite_from_bitmap_data(
-    bitmap: list[int],
-    *,
-    width: int,
-    bg_colour: RGBColour = BLACK,
-    fg_colour: RGBColour = WHITE
+def create_sprite_from_mono_bitmap_(
+        bitmap: list[int],
+        *,
+        width: int,
+        bg_colour: Colour = BLACK,
+        fg_colour: Colour = WHITE
 ) -> Sprite:
     sprite = Sprite([])
     for bitmap_row in bitmap:
-        row: list[RGBColour] = []
+        row: list[Colour] = []
         for column in range(width - 1, -1, -1):
             mask = 2**column
             row.append(fg_colour if bitmap_row & mask else bg_colour)
@@ -25,12 +24,12 @@ def create_sprite_from_bitmap_data(
     return sprite
 
 
-def create_sprite_from_image(image: Image) -> Sprite:
-    return _create_sprite_from_image_with_recolouring(image, lambda c: c)
+# def create_sprite_from_image(image: Image) -> Sprite:
+#     return _create_sprite_from_image_with_recolouring(image, lambda c: c)
 
 
-def create_coloured_sprite_from_mono_image(image: Image, *, foreground_colour: RGBColour) -> Sprite:
-    return _create_sprite_from_image_with_recolouring(image, lambda c: BLACK if c == BLACK else foreground_colour)
+# def create_coloured_sprite_from_mono_image(image: Image, *, foreground_colour: RGBColour) -> Sprite:
+#     return _create_sprite_from_image_with_recolouring(image, lambda c: BLACK if c == BLACK else foreground_colour)
 
 
 def _create_sprite_from_image_with_recolouring(image: Image, recolour: Callable[[RGBColour], RGBColour]) -> Sprite:

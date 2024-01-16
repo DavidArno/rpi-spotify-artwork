@@ -3,7 +3,7 @@
 # https://www.bbc.co.uk/weather and are the colours used by the BBC for their
 # weather forecasts. They are used here without permission.
 ################################################################################
-from graphics.colours import RGBColour
+from common.graphics.colours import RGBColour
 
 ColoursList = list[tuple[RGBColour, int]]
 

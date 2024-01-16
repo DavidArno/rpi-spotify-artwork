@@ -1,9 +1,9 @@
 import requests  # type: ignore
 import colorsys
-from graphics.colours import rgb_colour_to_rgb
-from graphics.canvas import Canvas, Layer
-from graphics.sprites import create_sprite_from_image
-from graphics.colours import RGBColour, rgb_values_to_rgb_colour
+from common.graphics.colours import rgb_colour_to_rgb
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.sprites import create_sprite_from_image
+from common.graphics.colours import RGBColour, rgb_values_to_rgb_colour
 from data_providers.spotify_currently_playing import SpotifyCurrentlyPlaying
 from PIL import Image  # type: ignore
 from io import BytesIO

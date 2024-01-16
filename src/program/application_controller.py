@@ -11,8 +11,8 @@ from controllers.wot_no_spotify_controller import WotNoSpotifyController
 from data_providers.mandelbrot import MandelbrotSet
 from data_providers.metoffice import MetOffice
 from data_providers.spotify_currently_playing import SpotifyCurrentlyPlaying
-from graphics.canvas import Canvas, Layer
-from graphics.colours import GREEN, RED, WHITE, RGBColour
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.colours import GREEN, RED, WHITE, RGBColour
 from rpi_spotify_shared import matrix_details, socket_details
 
 raw_metoffice_key = os.environ.get('DATAPOINT_API_KEY')

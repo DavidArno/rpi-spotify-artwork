@@ -2,7 +2,7 @@
 # The colours used here are taken from the Beaufort scale colours at
 # https://en.wikipedia.org/wiki/Beaufort_scale
 ################################################################################
-from graphics.colours import RGBColour
+from common.graphics.colours import RGBColour
 
 BeaufortList = list[tuple[RGBColour, int]]
 

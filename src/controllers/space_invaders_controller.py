@@ -7,8 +7,8 @@ from PIL import Image  # type:ignore
 from controllers.space_invader_parameters import \
         INVADER_ROWS, INVADERS_PER_ROW, MAXIMUM_BOMBS, MAXIMUM_INVADERS, TICKS_BETWEEN_INVADER_MOVES
 
-from graphics.canvas import Canvas, Layer
-from graphics.colours import BLACK, WHITE, RGBColour
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.colours import BLACK, WHITE, RGBColour
 from graphics.invaders import (BOMB_HEIGHT, BOMB_WIDTH, INVADER_HEIGHT, INVADER_WIDTH, MISSILE_LAUNCHER_WIDTH,
                                get_coloured_bomb_sprite,
                                get_coloured_dead_launcher_sprite,
@@ -16,7 +16,7 @@ from graphics.invaders import (BOMB_HEIGHT, BOMB_WIDTH, INVADER_HEIGHT, INVADER_
                                get_coloured_invader_sprite,
                                get_coloured_missile_launcher_sprite, get_coloured_missile_sprite,
                                get_coloured_saucer_sprite)
-from graphics.sprites import Sprite, create_coloured_sprite_from_mono_image
+from common.graphics.sprites import Sprite, create_coloured_sprite_from_mono_image
 
 _SPACE_INVADER_RED = RGBColour(0xEA1B2C)
 _SPACE_INVADER_ORANGE = RGBColour(0xF37618)

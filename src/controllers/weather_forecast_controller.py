@@ -4,10 +4,10 @@ from PIL import Image  # type: ignore
 
 from data_providers.metoffice import MetOffice, WeatherData
 from graphics.beaufort import get_colour_for_speed
-from graphics.canvas import Canvas, Layer
-from graphics.colours import BLACK, TIME_COLOUR, RGBColour
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.colours import BLACK, TIME_COLOUR, RGBColour
 from graphics.compass import get_coloured_compass_sprite
-from graphics.sprites import Sprite, create_sprite_from_image
+from common.graphics.sprites import Sprite, create_sprite_from_image
 from graphics.temperatures import get_colour_for_temperature
 
 

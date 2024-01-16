@@ -2,9 +2,9 @@ from typing import Callable
 
 from PIL import Image  # type: ignore
 
-from graphics.canvas import Canvas, Layer
-from graphics.colours import BLACK, TIME_COLOUR
-from graphics.sprites import create_sprite_from_image
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.colours import BLACK, TIME_COLOUR
+from common.graphics.sprites import create_sprite_from_image
 
 
 class WotNoSpotifyController():

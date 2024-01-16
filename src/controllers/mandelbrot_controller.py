@@ -2,8 +2,8 @@ import colorsys
 from typing import Callable
 
 from data_providers.mandelbrot import MandelbrotSet
-from graphics.canvas import Canvas, Layer
-from graphics.colours import RGBColour, rgb_values_to_rgb_colour
+from common.graphics.canvas import Canvas, Layer
+from common.graphics.colours import RGBColour, rgb_values_to_rgb_colour
 
 
 class MandelbrotController():

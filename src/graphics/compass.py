@@ -2,8 +2,8 @@
 # Set of wind direction arrows.
 # Order is (from 0 - 7): ↑ ↗ → ↘ ↓ ↙ ← ↖
 ################################################################################
-from graphics.colours import RGBColour
-from graphics.sprites import Sprite, create_sprite_from_bitmap_data
+from common.graphics.colours import RGBColour
+from common.graphics.sprites import Sprite, create_sprite_from_bitmap_data
 
 _COMPASS_IMAGE_DATA = [
     [
