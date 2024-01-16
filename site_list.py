@@ -1,35 +1,35 @@
 from typing import List, Tuple
 
 site_list: List[Tuple[float, float, int, str]] = [
-    (49.9000, -6.3000,   3803, "Scilly St Marys"),
-    (49.9000, -6.3000, 353324, "St Mary's Airport"),
+    (49.9000, -6.3000,   3803, "Scilly St Marys"), 
+    (49.9000, -6.3000, 353324, "St Mary's Airport"), 
     (50.0000, -5.3000, 354558, "Gunwalloe Church Cove (Beach)"),
-    (50.0000, -5.1000, 351034, "Coverack Youth Hostel"),
-    (50.1000, -5.7000, 352207, "Land's End Youth Hostel"),
+    (50.0000, -5.1000, 351034, "Coverack Youth Hostel"), 60x12
+    (50.1000, -5.7000, 352207, "Land's End Youth Hostel"),60x9
     (50.1000, -5.7000, 352205, "Land's End"),
-    (50.1000, -5.2000, 353978, "Trenear"),
-    (50.2000, -5.5000, 310233, "St. Ives"),
-    (50.2000, -5.0000, 352983, "Pendennis Youth Hostel"),
-    (50.2000, -4.8000, 350524, "Boswinger Youth Hostel"),
+    (50.1000, -5.2000, 353978, "Trenear"), 59x11
+    (50.2000, -5.5000, 310233, "St. Ives"), 59x10
+    (50.2000, -5.0000, 352983, "Pendennis Youth Hostel"), 59x12
+    (50.2000, -4.8000, 350524, "Boswinger Youth Hostel"), 59x13
     (50.2000, -3.8000, 324065, "Salcombe"),
     (50.3000, -5.3000, 354543, "Portreath (Beach)"),
-    (50.3000, -5.2000, 351708, "Gwennap Mining District"),
+    (50.3000, -5.2000, 351708, "Gwennap Mining District"), 
     (50.3000, -5.0000, 322880, "Truro"),
-    (50.3000, -4.8000, 354566, "Pentewan Sands (Beach)"),
+    (50.3000, -4.8000, 354566, "Pentewan Sands (Beach)"), 58x13
     (50.3000, -3.9000, 350424, "Bigbury-On-Sea"),
-    (50.3000, -3.7000, 350902, "Chillington"),
-    (50.4000, -5.1000, 354536, "Newquay - Tolcarne (Beach)"),
-    (50.4000, -4.5000, 351857, "Herodsfoot"),
+    (50.3000, -3.7000, 350902, "Chillington"), 58x17
+    (50.4000, -5.1000, 354536, "Newquay - Tolcarne (Beach)"),58x12 
+    (50.4000, -4.5000, 351857, "Herodsfoot"), 58x14
     (50.4000, -4.4000, 354572, "Millendreath (Beach)"),
-    (50.4000, -4.3000, 354573, "Downderry (Beach)"),
-    (50.4000, -4.1000, 310016, "Plymouth"),
-    (50.4000, -3.8000, 353577, "South Brent"),
+    (50.4000, -4.3000, 354573, "Downderry (Beach)"), 58x15
+    (50.4000, -4.1000, 310016, "Plymouth"), 58x16
+    (50.4000, -3.8000, 353577, "South Brent"), 58x18
     (50.4000, -3.5000, 350981, "Coleton Fishacre Garden"),
-    (50.4000, -3.5000, 354595, "St Mary's Bay (Beach)"),
-    (50.5000, -5.0000, 354530, "Constantine Bay (Beach)"),
-    (50.5000, -4.7000,   3823, "Cardinham"),
-    (50.5000, -4.2000, 353806, "Tamar Valley Mining District"),
-    (50.5000, -3.5000, 310153, "Torquay"),
+    (50.4000, -3.5000, 354595, "St Mary's Bay (Beach)"), 58x19
+    (50.5000, -5.0000, 354530, "Constantine Bay (Beach)"), 57x13, 15x14
+    (50.5000, -4.7000,   3823, "Cardinham"), 57x15, 57x16, 57x17
+    (50.5000, -4.2000, 353806, "Tamar Valley Mining District"), 57x18, 57x19, 57x20
+    (50.5000, -3.5000, 310153, "Torquay"), 57x21
     (50.5000, -2.4000,   3857, "Isle Of Portland"),
     (50.6000, -5.0000, 354527, "Trevone Bay (Beach)"),
     (50.6000, -4.7000, 350735, "Camelford"),

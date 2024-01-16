@@ -76,7 +76,6 @@ class MetOffice():
 
     def get_forecast(self) -> WeatherData:
         forecast = self._metoffice.loc_forecast('324156', metoffer.DAILY)  # type: ignore
-        self._metoffice.
         current_day = forecast["SiteRep"]["DV"]["Location"]["Period"][0]["Rep"]
         day = current_day[0]
         night = current_day[1]

@@ -21,19 +21,20 @@ if raw_metoffice_key is None:
 else:
     met_office_key = str(raw_metoffice_key)
 
-met_office =  MetOffice(met_office_key)
+met_office = MetOffice(met_office_key)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((socket_details.HOST, socket_details.PORT))
 
 
-def render_frame_count(canvas_ref:Any) -> None:
-    global last_frame_count
-    canvas = cast(Canvas, canvas_ref)
-    canvas.flood_fill(0, 61, 22, 3, RGBColour(0x010101), layer = Layer.Debug)
-    canvas.set_pixel(1, 62, WHITE, layer = Layer.Debug)
-    canvas.set_pixel(22, 62, WHITE, layer = Layer.Debug)
-    canvas.draw_horizontal_line(2, 62, last_frame_count, GREEN, layer = Layer.Debug)
-    canvas.draw_horizontal_line(2 + last_frame_count, 62, 20 - last_frame_count, RED, layer = Layer.Debug)
+def render_frame_count(canvas_ref: Any) -> None:
+    pass
+    # global last_frame_count
+    # canvas = cast(Canvas, canvas_ref)
+    # canvas.flood_fill(0, 61, 22, 3, RGBColour(0x010101), layer=Layer.Debug)
+    # canvas.set_pixel(1, 62, WHITE, layer=Layer.Debug)
+    # canvas.set_pixel(22, 62, WHITE, layer=Layer.Debug)
+    # canvas.draw_horizontal_line(2, 62, last_frame_count, GREEN, layer=Layer.Debug)
+    # canvas.draw_horizontal_line(2 + last_frame_count, 62, 20 - last_frame_count, RED, layer=Layer.Debug)
 
 
 spotify_canvas = Canvas(matrix_details.DISPLAY_WIDTH, matrix_details.DISPLAY_HEIGHT, render_frame_count)
@@ -63,9 +64,10 @@ while True:
     elif invader_controller.actively_displaying(start_time):
         data = invader_canvas.render_as_bytes()
     else:
-        data  = wot_no_canvas.render_as_bytes()
+        data = wot_no_canvas.render_as_bytes()
 
     sock.send(data)
+    sock.recv(1)
     end_time = time.time()
     frame_count += 1
     delay = 0.05 - (end_time - start_time)
