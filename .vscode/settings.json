@@ -13,12 +13,23 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.analysis.extraPaths": [
-        "./src/third_party"
+        "./src/third_party",
+        ".vscode\\Pico-W-Stub"
     ],
     "python.linting.pycodestyleEnabled": true,
-    "python.linting.pycodestyleArgs": ["--max-line-length=120"],
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=120"
+    ],
     "python.linting.enabled": true,
-    "python.autoComplete.extraPaths": [
-    
+    "python.autoComplete.extraPaths": [],
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    },
+    "micropico.syncFolder": "",
+    "micropico.openOnStart": true,
+    "python.analysis.typeshedPaths": [
+        ".vscode\\Pico-W-Stub"
     ]
 }
