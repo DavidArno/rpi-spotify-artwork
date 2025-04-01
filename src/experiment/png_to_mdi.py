@@ -28,7 +28,7 @@ def int16_bytes(x: int) -> tuple[int, int]:
     return x >> 8, x & 255
 
 
-image = Image.open("images/matrix-display/matrix-display-coloured.png").convert('RGB')
+image = Image.open("C:\\PersonalDev\\rpi-spotify-artwork\\images\\matrix-display\\setup-screen.png").convert('RGB')
 pixels: list[int] = []
 palette = Palette()
 
@@ -46,6 +46,6 @@ if palette.palette_count < 256:
 else:
     mdi_data += struct.pack(">H" * len(pixels), *pixels)
 
-with open("images/matrix-display/matrix-display-coloured.mdi", "wb") as mdi_file:
+with open("C:\\PersonalDev\\rpi-spotify-artwork\\images\\matrix-display\\setup-screen.mdi", "wb") as mdi_file:
     mdi_file.write(mdi_data)
 
